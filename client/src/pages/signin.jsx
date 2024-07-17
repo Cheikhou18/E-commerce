@@ -1,13 +1,32 @@
 import { useState } from "react";
+import { requestSignIn } from "../api/Authentication";
 
 function SignIn() {
   const [message, setMessage] = useState();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
 
-  function handleSignIn(e) {
+  async function handleSignIn(e) {
     e.preventDefault();
 
-    setMessage("Bonjour");
+    user.foreach((data) => {
+      if (data === "") {
+        return setMessage("Please complete the form.");
+      }
+    });
+
+    if (user.password !== user.confirm) {
+      return setMessage("Passwords must match.");
+    }
+
+    const request = await requestSignIn();
+
+    console.log(request);
   }
 
   return (
