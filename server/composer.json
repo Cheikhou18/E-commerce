@@ -16,6 +16,8 @@
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.1.*",
         "symfony/runtime": "7.1.*",
+        "symfony/ux-react": "^2.18",
+        "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "7.1.*"
     },
     "config": {
