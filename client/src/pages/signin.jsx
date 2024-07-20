@@ -1,31 +1,17 @@
 import { useState } from "react";
-import { requestSignIn } from "../api/Authentication";
+import { requestSignIn } from "../api/authentication";
 
 function SignIn() {
   const [message, setMessage] = useState();
   const [user, setUser] = useState({
-    firstname: "",
-    lastname: "",
     email: "",
     password: "",
-    confirm: "",
   });
 
   async function handleSignIn(e) {
     e.preventDefault();
 
-    user.foreach((data) => {
-      if (data === "") {
-        return setMessage("Please complete the form.");
-      }
-    });
-
-    if (user.password !== user.confirm) {
-      return setMessage("Passwords must match.");
-    }
-
-    const request = await requestSignIn();
-
+    const request = await requestSignIn({ ...user });
     console.log(request);
   }
 
@@ -37,12 +23,14 @@ function SignIn() {
         <label>E-mail</label>
         <input
           type="text"
+          placeholder="example@email.com"
           onChange={(e) => setUser({ ...user, email: e.target.value })}
         />
 
         <label>Password</label>
         <input
           type="text"
+          placeholder="********"
           onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
       </div>

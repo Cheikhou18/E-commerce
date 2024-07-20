@@ -1,18 +1,34 @@
 import { useState } from "react";
+import { requestSignUp } from "../api/authentication";
 
 function SignUp() {
   const [message, setMessage] = useState();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
 
-  function handleSignUp(e) {
+  async function handleSignUp(e) {
     e.preventDefault();
+    // Reset message
+    setMessage();
 
-    setMessage("Bonjour");
+    // Verify if a field is empty in the form
+    const formIsComplete = Object.values(user).every((value) => value !== "");
+    if (!formIsComplete) return setMessage("Please complete the form");
+
+    const request = await requestSignUp({ ...user });
+    console.log(request);
   }
 
   return (
     <form onSubmit={(e) => handleSignUp(e)}>
       <h3>Sign Up</h3>
+
+      {message}
 
       <div>
         <label>First name</label>
