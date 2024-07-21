@@ -19,6 +19,7 @@
     "symfony/password-hasher": "7.1.*",
     "symfony/runtime": "7.1.*",
     "symfony/security-bundle": "7.1.*",
+    "symfony/stimulus-bundle": "^2.18",
     "symfony/yaml": "7.1.*"
   },
   "config": {
