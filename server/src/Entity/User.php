@@ -15,13 +15,13 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 80)]
-    private ?string $Firstname = null;
+    private ?string $firstname = null;
 
     #[ORM\Column(length: 80)]
     private ?string $Lastname = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Mail = null;
+    private ?string $mail = null;
 
     #[ORM\Column(length: 255)]
     private ?string $Password = null;
@@ -60,12 +60,12 @@ class User
 
     public function getFirstname(): ?string
     {
-        return $this->Firstname;
+        return $this->firstname;
     }
 
-    public function setFirstname(string $Firstname): static
+    public function setFirstname(string $firstname): static
     {
-        $this->Firstname = $Firstname;
+        $this->firstname = $firstname;
 
         return $this;
     }
@@ -84,12 +84,12 @@ class User
 
     public function getMail(): ?string
     {
-        return $this->Mail;
+        return $this->mail;
     }
 
-    public function setMail(string $Mail): static
+    public function setMail(string $mail): static
     {
-        $this->Mail = $Mail;
+        $this->mail = $mail;
 
         return $this;
     }
