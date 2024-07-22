@@ -20,6 +20,9 @@ function SignUp() {
     const formIsComplete = Object.values(user).every((value) => value !== "");
     if (!formIsComplete) return setMessage("Please complete the form");
 
+    if (user.password !== user.confirm)
+      return setMessage("Passwords do not match");
+
     const request = await requestSignUp({ ...user });
     console.log(request);
   }
@@ -52,13 +55,13 @@ function SignUp() {
 
       <label>Password</label>
       <input
-        type="text"
+        type="password"
         onChange={(e) => setUser({ ...user, password: e.target.value })}
       />
 
       <label>Password confirmation</label>
       <input
-        type="text"
+        type="password"
         onChange={(e) => setUser({ ...user, confirm: e.target.value })}
       />
 
