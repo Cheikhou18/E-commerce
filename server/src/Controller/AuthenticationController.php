@@ -53,9 +53,7 @@ class AuthenticationController extends AbstractController
     public function signin(Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $data = json_decode($request->getContent(), false);
-        $userExists = $this->em->getRepository(User::class)->findOneByEmail("max.chen@epitech.eu");
-        // dd($userExists);
-        // return $this->json($userExists->getEmail());
+        $userExists = $this->em->getRepository(User::class)->findOneByEmail($data->email);
 
         if (!$userExists) {
             return $this->json(['success' => false, 'message' => 'User does not exist']);
