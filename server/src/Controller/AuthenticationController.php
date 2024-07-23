@@ -27,15 +27,18 @@ class AuthenticationController extends AbstractController
         $data = json_decode($request->getContent(), false);
         $userExists = $this->em->getRepository(User::class)->findOneByEmail($data->email);
 
+        // If a user with this email already exists
         if ($userExists) {
             return $this->json(['success' => false, 'message' => 'User already exists']);
         }
 
         $plainPassword = $data->password;
 
+        // Create new instance of User
         $user = new User();
         $user->setEmail($data->email);
 
+        // Hash password
         $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
         $user->setPassword($hashedPassword);
         $user->setCreationDate(new DateTimeImmutable());
@@ -43,9 +46,12 @@ class AuthenticationController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
+        // Find newly created user in database
+        $newUser = $this->em->getRepository(User::class)->findOneByEmail($data->email);
+
         return $this->json([
             'success' => true,
-            'user' => $user
+            'id' => $newUser->getId()
         ]);
     }
 
@@ -55,10 +61,12 @@ class AuthenticationController extends AbstractController
         $data = json_decode($request->getContent(), false);
         $userExists = $this->em->getRepository(User::class)->findOneByEmail($data->email);
 
+        // If no user is found using this email
         if (!$userExists) {
             return $this->json(['success' => false, 'message' => 'User does not exist']);
         }
 
+        // If password does not match
         if (!$passwordHasher->isPasswordValid($userExists, $data->password)) {
             return $this->json(['success' => false, 'message' => 'Incorrect password']);
         }
