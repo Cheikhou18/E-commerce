@@ -13,22 +13,22 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $category = null;
+    #[ORM\Column(length: 30)]
+    private ?string $name = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCategory(): ?string
+    public function getName(): ?string
     {
-        return $this->category;
+        return $this->name;
     }
 
-    public function setCategory(string $category): static
+    public function setName(string $name): static
     {
-        $this->category = $category;
+        $this->name = $name;
 
         return $this;
     }

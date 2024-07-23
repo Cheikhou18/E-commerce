@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\FeaturesRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FeaturesRepository::class)]
@@ -14,7 +13,7 @@ class Features
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column]
     private array $features = [];
 
     public function getId(): ?int
