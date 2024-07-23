@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Product;
 
-class ProductListController extends AbstractController
+class ProductController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
 
@@ -17,13 +17,14 @@ class ProductListController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/api/products', name: 'app_products')]
+    #[Route('/api/products', name: 'app_product_list')]
     public function index(): JsonResponse
     {
         $products = $this->entityManager->getRepository(Product::class)->getAll();
+        // dd($products);
 
         return $this->json([
-            'success' => true,
+            'success' => true,  
             'produits' => $products
         ]);
     }

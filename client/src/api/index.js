@@ -1,13 +1,18 @@
 const URL = "http://localhost:8000";
 
 async function api(method, path, data = {}) {
-  return fetch(URL + path, {
+  const options = {
     method: method,
     headers: {
       "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...data }),
-  })
+    }
+  };
+
+  if (method !== "GET") {
+    options.body = JSON.stringify({ ...data });
+  }
+
+  return fetch(URL + path, options)
     .then(async (res) => {
       const response = await res.json();
       return response;
