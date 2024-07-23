@@ -17,14 +17,13 @@ class ProductListController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/api/products', name: 'app_product_list')]
+    #[Route('/api/products', name: 'app_products')]
     public function index(): JsonResponse
     {
         $products = $this->entityManager->getRepository(Product::class)->getAll();
-        // dd($products);
 
         return $this->json([
-            'success' => true,  
+            'success' => true,
             'produits' => $products
         ]);
     }
