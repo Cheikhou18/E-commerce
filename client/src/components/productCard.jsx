@@ -1,6 +1,7 @@
 import "../assets/css/Products.css";
 
-function ProductCard({ product }) {
+function ProductCard(props) {
+  const { product } = props;
   return (
     <>
       <img src={product.image} alt={product.name} className="product-image" />
