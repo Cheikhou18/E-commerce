@@ -1,22 +1,24 @@
-import { React, useState } from "react";
-import TextField from "@mui/material/TextField";
-import "../assets/css/Products.css";
+import React, { useState } from 'react';
+import TextField from '@mui/material/TextField';
 
-function searchBar() {
+function SearchBar({ onSearchChange }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    onSearchChange(event.target.value);
+  };
+
   return (
-    <div className="main">
-      <h1>React Search</h1>
-      <div className="search">
-        <TextField
-          id="outlined-basic"
-          variant="outlined"
-          fullWidth
-          label="Search"
-        />
-      </div>
-      <List />
-    </div>
+    <TextField
+      id="search"
+      variant="outlined"
+      fullWidth
+      label="Search"
+      value={searchTerm}
+      onChange={handleSearchChange}
+    />
   );
 }
 
-export default searchBar;
+export default SearchBar;
