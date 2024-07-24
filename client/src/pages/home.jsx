@@ -6,6 +6,8 @@ import SortSelect from "../components/sortSelect";
 import CategoryFilter from "../components/categoryFilter";
 import FilteredProducts from "../components/filteredProducts";
 import "../assets/css/Products.css";
+import { Link } from 'react-router-dom';
+
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -35,6 +37,7 @@ function Home() {
     setCategoryFilter(categoryFilter);
   };
 
+
   const filteredProducts = FilteredProducts(
     products,
     searchTerm,
@@ -53,7 +56,7 @@ function Home() {
       <div className="products-grid">
         {filteredProducts?.map((product) => (
           <div className="product-card" key={product.id}>
-            <ProductCard product={product} />
+              <ProductCard product={product} />
           </div>
         ))}
       </div>
