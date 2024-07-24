@@ -1,32 +1,33 @@
 import { useState } from "react";
-import { requestSignIn } from "../api/Authentication";
+import { requestSignIn } from "../api/authentication";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
+  const navigate = useNavigate();
+
   const [message, setMessage] = useState();
   const [user, setUser] = useState({
-    firstname: "",
-    lastname: "",
     email: "",
     password: "",
-    confirm: "",
   });
 
   async function handleSignIn(e) {
     e.preventDefault();
+    // Reset message
+    setMessage();
 
-    user.foreach((data) => {
-      if (data === "") {
-        return setMessage("Please complete the form.");
-      }
-    });
+    // Verify if the form is complete
+    const formIsComplete = Object.values(user).every((value) => value !== "");
+    if (!formIsComplete) return setMessage("Please complete the form");
 
-    if (user.password !== user.confirm) {
-      return setMessage("Passwords must match.");
+    const request = await requestSignIn({ ...user });
+
+    if (!request.success) {
+      return setMessage(request.message);
     }
 
-    const request = await requestSignIn();
-
-    console.log(request);
+    localStorage.setItem("id", request.id);
+    navigate("/");
   }
 
   return (
@@ -37,15 +38,21 @@ function SignIn() {
         <label>E-mail</label>
         <input
           type="text"
+          placeholder="example@email.com"
           onChange={(e) => setUser({ ...user, email: e.target.value })}
         />
+      </div>
 
+      <div>
         <label>Password</label>
         <input
           type="text"
+          placeholder="********"
           onChange={(e) => setUser({ ...user, password: e.target.value })}
         />
       </div>
+
+      {message}
 
       <button>Submit</button>
     </form>

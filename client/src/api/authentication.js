@@ -1,21 +1,9 @@
-import api from ".";
+import { post } from ".";
 
-export async function requestSignIn() {
-  const request = await api("/api/signin");
-
-  if (request.success === false) {
-    return { success: false, message: request.message };
-  }
-
-  return { success: true, response: request.response };
+export async function requestSignIn({ ...data }) {
+  return await post("/api/signin", data);
 }
 
-export function requestSignUp() {
-  const request = api("/api/signup");
-
-  if (request.success === false) {
-    return { success: false, message: request.message };
-  }
-
-  return { success: true, response: request.response };
+export async function requestSignUp({ ...data }) {
+  return await post("/api/signup", data);
 }

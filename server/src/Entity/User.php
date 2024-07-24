@@ -5,211 +5,239 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 80)]
-    private ?string $Firstname = null;
+    #[ORM\Column(length: 180)]
+    private ?string $email = null;
 
-    #[ORM\Column(length: 80)]
-    private ?string $Lastname = null;
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column]
+    private array $roles = [];
 
-    #[ORM\Column(length: 255)]
-    private ?string $Mail = null;
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Password = null;
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $firstname = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Address = null;
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $lastname = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $tel = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $zipcode = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $address = null;
 
     #[ORM\Column]
-    private ?int $Zipcode = null;
+    private ?\DateTimeImmutable $creation_date = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $City = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $modification_date = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Country = null;
-
-    #[ORM\Column]
-    private ?int $Tel = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $CreationDate = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $ModificationDate = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $LastConnection = null;
-
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $role = [];
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $last_connected = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFirstname(): ?string
+    public function getEmail(): ?string
     {
-        return $this->Firstname;
+        return $this->email;
     }
 
-    public function setFirstname(string $Firstname): static
+    public function setEmail(string $email): static
     {
-        $this->Firstname = $Firstname;
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): static
+    {
+        $this->firstname = $firstname;
 
         return $this;
     }
 
     public function getLastname(): ?string
     {
-        return $this->Lastname;
+        return $this->lastname;
     }
 
-    public function setLastname(string $Lastname): static
+    public function setLastname(?string $lastname): static
     {
-        $this->Lastname = $Lastname;
+        $this->lastname = $lastname;
 
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getTel(): ?string
     {
-        return $this->Mail;
+        return $this->tel;
     }
 
-    public function setMail(string $Mail): static
+    public function setTel(?string $tel): static
     {
-        $this->Mail = $Mail;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->Password;
-    }
-
-    public function setPassword(string $Password): static
-    {
-        $this->Password = $Password;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->Address;
-    }
-
-    public function setAddress(string $Address): static
-    {
-        $this->Address = $Address;
-
-        return $this;
-    }
-
-    public function getZipcode(): ?int
-    {
-        return $this->Zipcode;
-    }
-
-    public function setZipcode(int $Zipcode): static
-    {
-        $this->Zipcode = $Zipcode;
+        $this->tel = $tel;
 
         return $this;
     }
 
     public function getCity(): ?string
     {
-        return $this->City;
+        return $this->city;
     }
 
-    public function setCity(string $City): static
+    public function setCity(?string $city): static
     {
-        $this->City = $City;
+        $this->city = $city;
 
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getZipcode(): ?string
     {
-        return $this->Country;
+        return $this->zipcode;
     }
 
-    public function setCountry(string $Country): static
+    public function setZipcode(?string $zipcode): static
     {
-        $this->Country = $Country;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
 
-    public function getTel(): ?int
+    public function getAddress(): ?string
     {
-        return $this->Tel;
+        return $this->address;
     }
 
-    public function setTel(int $Tel): static
+    public function setAddress(?string $address): static
     {
-        $this->Tel = $Tel;
+        $this->address = $address;
 
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeInterface
+    public function getCreationDate(): ?\DateTimeImmutable
     {
-        return $this->CreationDate;
+        return $this->creation_date;
     }
 
-    public function setCreationDate(\DateTimeInterface $CreationDate): static
+    public function setCreationDate(\DateTimeImmutable $creation_date): static
     {
-        $this->CreationDate = $CreationDate;
+        $this->creation_date = $creation_date;
 
         return $this;
     }
 
     public function getModificationDate(): ?\DateTimeInterface
     {
-        return $this->ModificationDate;
+        return $this->modification_date;
     }
 
-    public function setModificationDate(?\DateTimeInterface $ModificationDate): static
+    public function setModificationDate(?\DateTimeInterface $modification_date): static
     {
-        $this->ModificationDate = $ModificationDate;
+        $this->modification_date = $modification_date;
 
         return $this;
     }
 
-    public function getLastConnection(): ?\DateTimeInterface
+    public function getLastConnected(): ?\DateTimeInterface
     {
-        return $this->LastConnection;
+        return $this->last_connected;
     }
 
-    public function setLastConnection(?\DateTimeInterface $LastConnection): static
+    public function setLastConnected(?\DateTimeInterface $last_connected): static
     {
-        $this->LastConnection = $LastConnection;
-
-        return $this;
-    }
-
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): static
-    {
-        $this->role = $role;
+        $this->last_connected = $last_connected;
 
         return $this;
     }
