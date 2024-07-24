@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
+// use Symfony\Component\Security\Core\Security;
 
 class ProductController extends AbstractController
 {
@@ -24,6 +25,17 @@ class ProductController extends AbstractController
     private function isAdmin(): bool
     {
         return $this->security->isGranted('ROLE_ADMIN');
+    }
+
+    #[Route('/api/products', name: 'app_product_list', methods: ['GET'])]
+    public function getProducts()
+    {
+        $products = $this->entityManager->getRepository(Product::class)->getAll();
+
+        return $this->json([
+            'success' => true,
+            'produits' => $products
+        ]);
     }
 
     #[Route('/api/products', name: 'add_product', methods: ['POST'])]
@@ -86,17 +98,9 @@ class ProductController extends AbstractController
         $this->entityManager->flush();
 
         return new JsonResponse(['status' => 'Product deleted!'], 200);
-
-    #[Route('/api/products', name: 'app_product_list')]
-    public function index()
-    {
-        $products = $this->entityManager->getRepository(Product::class)->getAll();
-
-        return $this->json([
-            'success' => true,
-            'produits' => $products
-        ]);
     }
+
+
 
     #[Route('/api/products/{id}', name: 'app_product_details')]
     public function productdetails(Request $request, EntityManagerInterface $entityManager): JsonResponse
