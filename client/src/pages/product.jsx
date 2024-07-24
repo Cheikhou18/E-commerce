@@ -18,7 +18,7 @@ function ProductDetails() {
     fetchDetails();
   }, []);
 
-  console.log(products);
+  // console.log(products);
 }
 
 export default ProductDetails;
