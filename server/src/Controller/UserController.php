@@ -31,23 +31,22 @@ class UserController extends AbstractController
         ]);
     }
 
-    
-#[Route('/api/user-info', name: 'user_info', methods: ['GET'])]
-public function userInfo(): JsonResponse
-{
-    $user = $this->getUser();
 
-    if (!$user) {
-        return new JsonResponse(['message' => 'User not found'], 404);
+    #[Route('/api/user-info', name: 'user_info', methods: ['GET'])]
+    public function userInfo(): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return new JsonResponse(['message' => 'User not found'], 404);
+        }
+
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname()
+        ]);
     }
-
-    return new JsonResponse([
-        'id' => $user->getId(),
-        'email' => $user->getEmail(),
-        'roles' => $user->getRoles(),
-        'firstname' => $user->getFirstname(),
-        'lastname' => $user->getLastname()
-    ]);
-}
-
 }

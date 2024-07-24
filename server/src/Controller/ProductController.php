@@ -86,5 +86,31 @@ class ProductController extends AbstractController
         $this->entityManager->flush();
 
         return new JsonResponse(['status' => 'Product deleted!'], 200);
+
+    #[Route('/api/products', name: 'app_product_list')]
+    public function index()
+    {
+        $products = $this->entityManager->getRepository(Product::class)->getAll();
+
+        return $this->json([
+            'success' => true,
+            'produits' => $products
+        ]);
+    }
+
+    #[Route('/api/products/{id}', name: 'app_product_details')]
+    public function productdetails(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $id = $request->get('id');
+        $product = $entityManager->getRepository(Product::class)->find($id);
+
+        if (!$product) {
+            return $this->json(['success' => false]);
+        }
+
+        return $this->json([
+            'success' => true,
+            'product' => $product,
+        ]);
     }
 }

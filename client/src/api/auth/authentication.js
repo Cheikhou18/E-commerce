@@ -1,4 +1,4 @@
-import { post } from ".";
+import { post } from "..";
 
 export async function requestSignIn({ ...data }) {
   return await post("/api/signin", data);

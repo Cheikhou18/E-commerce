@@ -14,11 +14,13 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Features $features = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $id_features = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
+    private ?int $id_category = null;
+
+    #[ORM\Column(length: 60)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -30,23 +32,37 @@ class Product
     #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Category $categorie = null;
+    #[ORM\Column]
+    private ?int $popularity = null;
+
+    #[ORM\Column]
+    private ?int $stock = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFeatures(): ?Features
+    public function getIdFeatures(): ?int
     {
-        return $this->features;
+        return $this->id_features;
     }
 
-    public function setFeatures(Features $features): static
+    public function setIdFeatures(?int $id_features): static
     {
-        $this->features = $features;
+        $this->id_features = $id_features;
+
+        return $this;
+    }
+
+    public function getIdCategory(): ?int
+    {
+        return $this->id_category;
+    }
+
+    public function setIdCategory(int $id_category): static
+    {
+        $this->id_category = $id_category;
 
         return $this;
     }
@@ -99,14 +115,26 @@ class Product
         return $this;
     }
 
-    public function getCategorie(): ?Category
+    public function getPopularity(): ?int
     {
-        return $this->categorie;
+        return $this->popularity;
     }
 
-    public function setCategorie(Category $categorie): static
+    public function setPopularity(int $popularity): static
     {
-        $this->categorie = $categorie;
+        $this->popularity = $popularity;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
 
         return $this;
     }
