@@ -7,9 +7,11 @@ import {
   getProducts,
 } from "../api/products.js";
 
-const Product = () => {
+const Admin = () => {
   const [products, setProducts] = useState([]);
   const { user, isAdmin } = useAuth() || {};
+
+  console.log(user, isAdmin);
 
   useEffect(() => {
     fetchProducts();
@@ -91,4 +93,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Admin;
