@@ -7,7 +7,7 @@ import Breadcrumbs from "../components/breadcrumbs";
 function Router() {
   return (
     <BrowserRouter>
-      <Breadcrumbs />
+      {/* <Breadcrumbs /> */}
 
       <Routes>
         {<Route path="/" element={<Home />} />}
