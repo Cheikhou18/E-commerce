@@ -35,7 +35,12 @@ function Home() {
     setCategoryFilter(categoryFilter);
   };
 
-  const filteredProducts = FilteredProducts(products, searchTerm, sortOrder, categoryFilter);
+  const filteredProducts = FilteredProducts(
+    products,
+    searchTerm,
+    sortOrder,
+    categoryFilter
+  );
 
   return (
     <div className="products-container">
@@ -46,7 +51,7 @@ function Home() {
         <CategoryFilter onCategoryChange={handleCategoryChange} />
       </div>
       <div className="products-grid">
-        {filteredProducts.map((product) => (
+        {filteredProducts?.map((product) => (
           <div className="product-card" key={product.id}>
             <ProductCard product={product} />
           </div>
