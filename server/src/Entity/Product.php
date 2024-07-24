@@ -35,6 +35,9 @@ class Product
     #[ORM\Column]
     private ?int $popularity = null;
 
+    #[ORM\Column]
+    private ?int $stock = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class Product
     public function setPopularity(int $popularity): static
     {
         $this->popularity = $popularity;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
 
         return $this;
     }
