@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { requestSignIn } from "../api/authentication";
-<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
-=======
->>>>>>> 6e51512951253f59d1a8600ddee16bf4f01af8dc
 
 function SignIn() {
   const navigate = useNavigate();
