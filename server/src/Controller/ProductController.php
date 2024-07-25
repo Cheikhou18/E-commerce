@@ -8,23 +8,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
-// use Symfony\Component\Security\Core\Security;
 
 class ProductController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
-    private Security $security;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->security = $security;
-    }
-
-    private function isAdmin(): bool
-    {
-        return $this->security->isGranted('ROLE_ADMIN');
     }
 
     #[Route('/api/products', name: 'app_product_list', methods: ['GET'])]
@@ -41,35 +32,31 @@ class ProductController extends AbstractController
     #[Route('/api/products', name: 'add_product', methods: ['POST'])]
     public function addProduct(Request $request): JsonResponse
     {
-        if (!$this->isAdmin()) {
-            return new JsonResponse(['status' => 'Access denied'], 403);
-        }
-
         $data = json_decode($request->getContent(), true);
 
         $product = new Product();
         $product->setName($data['name']);
-        $product->setDescription($data['description']);
         $product->setPrice($data['price']);
+        $product->setImage($data['image']);
+        $product->setStock($data['stock']);
+        $product->setIdCategory($data['id_category']);
+        $product->setDescription($data['description']);
         $product->setPopularity(0);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'Product created!'], 201);
+        return new JsonResponse(['success' => true, 'message' => 'Product created!'], 201);
     }
 
     #[Route('/api/products/{id}', name: 'edit_product', methods: ['PUT'])]
     public function editProduct($id, Request $request): JsonResponse
     {
-        if (!$this->isAdmin()) {
-            return new JsonResponse(['status' => 'Access denied'], 403);
-        }
 
         $product = $this->entityManager->getRepository(Product::class)->find($id);
 
         if (!$product) {
-            return new JsonResponse(['status' => 'Product not found!'], 404);
+            return new JsonResponse(['success' => false, 'message' => 'Product not found!'], 404);
         }
 
         $data = json_decode($request->getContent(), true);
@@ -79,26 +66,24 @@ class ProductController extends AbstractController
 
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'Product updated!'], 200);
+        return new JsonResponse(['success' => true, 'message' => 'Product updated!'], 200);
     }
 
     #[Route('/api/products/{id}', name: 'delete_product', methods: ['DELETE'])]
     public function deleteProduct($id): JsonResponse
     {
-        if (!$this->isAdmin()) {
-            return new JsonResponse(['status' => 'Access denied'], 403);
-        }
+
 
         $product = $this->entityManager->getRepository(Product::class)->find($id);
 
         if (!$product) {
-            return new JsonResponse(['status' => 'Product not found!'], 404);
+            return new JsonResponse(['success' => false, 'message' => 'Product not found!'], 404);
         }
 
         $this->entityManager->remove($product);
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'Product deleted!'], 200);
+        return new JsonResponse(['success' => true, 'message' => 'Product deleted!'], 200);
     }
 
 
@@ -110,7 +95,7 @@ class ProductController extends AbstractController
         $product = $entityManager->getRepository(Product::class)->find($id);
 
         if (!$product) {
-            return $this->json(['success' => false]);
+            return $this->json(['success' => false, 'message' => 'Product does not exist']);
         }
 
         // Increase popularity of the product

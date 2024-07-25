@@ -73,4 +73,18 @@ class AuthenticationController extends AbstractController
 
         return $this->json(['success' => true, 'id' => $userExists->getId()]);
     }
+
+    #[Route('/api/admin/verif', name: 'app_verif_admin')]
+    public function VerifAdmin(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), false);
+        $userExists = $this->em->getRepository(User::class)->findOneById($data->id);
+
+        // If no user is found using this email
+        if (!$userExists) {
+            return $this->json(['success' => false, 'message' => 'User does not exist']);
+        }
+
+        return $this->json(['success' => true, 'roles' => $userExists->getRoles()]);
+    }
 }

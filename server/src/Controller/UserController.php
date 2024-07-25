@@ -21,6 +21,7 @@ class UserController extends AbstractController
     {
         if (!$this->security->isGranted('ROLE_ADMIN')) {
             return new JsonResponse([
+                'success' => false,
                 'message' => 'Access denied. You do not have the required permissions.',
             ], 403);
         }
@@ -38,7 +39,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
-            return new JsonResponse(['message' => 'User not found'], 404);
+            return new JsonResponse(['success' => false, 'message' => 'User not found'], 404);
         }
 
         return new JsonResponse([

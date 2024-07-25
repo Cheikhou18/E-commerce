@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../api/auth/admin.js";
 import {
   addProduct,
@@ -9,11 +10,12 @@ import {
 
 const Admin = () => {
   const [products, setProducts] = useState([]);
-  const { user, isAdmin } = useAuth() || {};
-
-  console.log(user, isAdmin);
+  const navigate = useNavigate();
+  const { isAdmin } = useAuth() || {};
 
   useEffect(() => {
+    console.log(isAdmin);
+
     fetchProducts();
   }, []);
 
@@ -30,9 +32,12 @@ const Admin = () => {
 
     try {
       await addProduct({
-        name: "New Product",
+        name: "New Product 3",
         description: "Product description",
+        id_category: 1,
+        image: "",
         price: 100,
+        stock: 20,
       });
 
       fetchProducts();
@@ -75,7 +80,7 @@ const Admin = () => {
       <ul>
         {products?.map((product) => (
           <li key={product.id}>
-            {product.name} - {product.price}
+            {product.name} - {product.price}€
             {isAdmin && (
               <>
                 <button onClick={() => handleEditProduct(product.id)}>
