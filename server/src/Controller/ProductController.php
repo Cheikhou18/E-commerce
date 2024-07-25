@@ -51,6 +51,7 @@ class ProductController extends AbstractController
         $product->setName($data['name']);
         $product->setDescription($data['description']);
         $product->setPrice($data['price']);
+        $product->setPopularity(0);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -111,6 +112,13 @@ class ProductController extends AbstractController
         if (!$product) {
             return $this->json(['success' => false]);
         }
+
+        // Increase popularity of the product
+
+        $popularity = $product->getPopularity() + 1;
+        $product->setPopularity($popularity);
+
+        $entityManager->flush();
 
         return $this->json([
             'success' => true,
