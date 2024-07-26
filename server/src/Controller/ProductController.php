@@ -72,8 +72,6 @@ class ProductController extends AbstractController
     #[Route('/api/products/{id}', name: 'delete_product', methods: ['DELETE'])]
     public function deleteProduct($id): JsonResponse
     {
-
-
         $product = $this->entityManager->getRepository(Product::class)->find($id);
 
         if (!$product) {
