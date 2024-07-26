@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getProducts, getProductsByPopularity } from "../api/products";
-import ProductCard from "../components/productCard";
-import "../assets/css/Products.css";
+import { getProductsByPopularity } from "../api/products";
 import Navbar from "../components/navbar";
+import ProductCarousel from "../components/productCarousel"; 
+import "../assets/css/Products.css";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -19,15 +19,9 @@ function Home() {
 
   return (
     <div className="products-container">
-      <Navbar/>
+      <Navbar />
       <h1>Top 3 Products</h1>
-      <div className="products-grid">
-        {products.slice(0, 3).map((product) => (
-          <div className="product-card" key={product.id}>
-            <ProductCard product={product} />
-          </div>
-        ))}
-      </div>
+      <ProductCarousel products={products.slice(0, 3)} />
     </div>
   );
 }

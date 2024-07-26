@@ -91,3 +91,39 @@ ul li {
   border-radius: 5px;
   transition: background-color 0.3s;
 }
+.product-carousel {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+}
+
+.product-carousel-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.product-carousel-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-carousel-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.product-carousel-details {
+  text-align: center;
+}
+
+.product-carousel-name {
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+.product-carousel-price {
+  color: #888;
+  margin-top: 5px;
+}
