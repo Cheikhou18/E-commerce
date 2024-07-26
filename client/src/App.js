@@ -1,7 +1,7 @@
 import "./index.css";
 import Router from "./router";
 
-import { AuthProvider } from "./api/auth/admin";
+import { AuthProvider } from "./context/admin";
 
 function App() {
   return (

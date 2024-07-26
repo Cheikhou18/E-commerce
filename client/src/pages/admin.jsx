@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../api/auth/admin.js";
+import { useAuth } from "../context/admin";
 import {
   addProduct,
   deleteProduct,
@@ -14,7 +14,7 @@ const Admin = () => {
   const { isAdmin } = useAuth() || {};
 
   useEffect(() => {
-    console.log(isAdmin);
+    if (isAdmin === false) return navigate("/");
 
     fetchProducts();
   }, []);
@@ -28,8 +28,6 @@ const Admin = () => {
   }
 
   const handleAddProduct = async () => {
-    if (!isAdmin) return;
-
     try {
       await addProduct({
         name: "New Product 3",
@@ -47,8 +45,6 @@ const Admin = () => {
   };
 
   const handleEditProduct = async (id) => {
-    if (!isAdmin) return;
-
     try {
       await editProduct(id, {
         name: "Updated Product",
@@ -63,8 +59,6 @@ const Admin = () => {
   };
 
   const handleDeleteProduct = async (id) => {
-    if (!isAdmin) return;
-
     try {
       await deleteProduct(id);
       fetchProducts();
@@ -75,8 +69,10 @@ const Admin = () => {
 
   return (
     <div>
-      <h1>Product </h1>
-      {isAdmin && <button onClick={handleAddProduct}>Add Product</button>}
+      <h1>Products</h1>
+
+      <button onClick={handleAddProduct}>Add Product</button>
+
       <ul>
         {products?.map((product) => (
           <li key={product.id}>
