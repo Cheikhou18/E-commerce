@@ -9,7 +9,7 @@ import {
 } from "../api/products.js";
 import { createCategory } from "../api/auth/admin.js";
 
-const Admin = () => {
+function Admin() {
   const [products, setProducts] = useState();
   const [newCategory, setNewCategory] = useState();
   const [message, setMessage] = useState({ categories: "", products: "" });
@@ -122,6 +122,6 @@ const Admin = () => {
       </ul>
     </div>
   );
-};
+}
 
 export default Admin;
