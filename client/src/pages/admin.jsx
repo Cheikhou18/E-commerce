@@ -7,10 +7,13 @@ import {
   deleteProduct,
   editProduct,
   getProducts,
-} from "../api/products.js";
+} from "../api/products";
+import ProductForm from "../components/productForm";
 
 const Admin = () => {
   const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isFormVisible, setFormVisible] = useState(false);
   const navigate = useNavigate();
   const { isAdmin } = useAuth() || {};
 
@@ -28,32 +31,22 @@ const Admin = () => {
     }
   }
 
-  const handleAddProduct = async () => {
+  const handleAddProduct = async (data) => {
     try {
-      await addProduct({
-        name: "New Product 3",
-        description: "Product description",
-        id_category: 1,
-        image: "",
-        price: 100,
-        stock: 20,
-      });
-
+      await addProduct(data);
       fetchProducts();
+      setFormVisible(false);
     } catch (error) {
       console.error("Erreur lors de la création du produit:", error);
     }
   };
 
-  const handleEditProduct = async (id) => {
+  const handleEditProduct = async (data) => {
     try {
-      await editProduct(id, {
-        name: "Updated Product",
-        description: "Updated description",
-        price: 150,
-      });
-
+      await editProduct(selectedProduct.id, data);
       fetchProducts();
+      setFormVisible(false);
+      setSelectedProduct(null);
     } catch (error) {
       console.error("Erreur lors de la modification du produit:", error);
     }
@@ -68,12 +61,29 @@ const Admin = () => {
     }
   };
 
+  const openFormToAdd = () => {
+    setSelectedProduct(null);
+    setFormVisible(true);
+  };
+
+  const openFormToEdit = (product) => {
+    setSelectedProduct(product);
+    setFormVisible(true);
+  };
+
   return (
     <div>
       <Navbar/>
       <h1>Products</h1>
 
-      <button onClick={handleAddProduct}>Add Product</button>
+      <button onClick={openFormToAdd}>Add Product</button>
+
+      {isFormVisible && (
+        <ProductForm
+          product={selectedProduct}
+          onSubmit={selectedProduct ? handleEditProduct : handleAddProduct}
+        />
+      )}
 
       <ul>
         {products?.map((product) => (
@@ -81,12 +91,8 @@ const Admin = () => {
             {product.name} - {product.price}€
             {isAdmin && (
               <>
-                <button onClick={() => handleEditProduct(product.id)}>
-                  Edit
-                </button>
-                <button onClick={() => handleDeleteProduct(product.id)}>
-                  Delete
-                </button>
+                <button onClick={() => openFormToEdit(product)}>Edit</button>
+                <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
               </>
             )}
           </li>
