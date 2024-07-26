@@ -30,7 +30,7 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/categories', name: 'app_category', method: ['POST'])]
+    #[Route('/categories', name: 'app_category', methods: ['POST'])]
     public function createCategory(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), false);
@@ -44,7 +44,7 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/categories/{id}', name: 'app_category', method: ['PUT'])]
+    #[Route('/categories/{id}', name: 'app_category', methods: ['PUT'])]
     public function editCategory($id, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), false);
@@ -61,7 +61,7 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/categories/{id}', name: 'app_category', method: ['DELETE'])]
+    #[Route('/categories/{id}', name: 'app_category', methods: ['DELETE'])]
     public function deleteCategory($id): JsonResponse
     {
         $categoryExists = $this->em->getRepository(Category::class)->findById($id);
