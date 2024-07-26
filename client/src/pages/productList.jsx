@@ -48,7 +48,7 @@ function ProductList() {
 
   return (
     <div>
-
+        <Navbar/>
     <div className="products-container">
       <h1>Products</h1>
       <div className="filters">
