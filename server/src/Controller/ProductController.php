@@ -28,7 +28,31 @@ class ProductController extends AbstractController
             'produits' => $products
         ]);
     }
-
+    #[Route('/api/products/popular', name: 'app_product_popular', methods: ['GET'])]
+    public function getPopularProducts(): JsonResponse
+    {
+        $products = $this->entityManager->getRepository(Product::class)
+            ->findBy([], ['popularity' => 'DESC']);
+    
+        $productData = [];
+        foreach ($products as $product) {
+            $productData[] = [
+                'name' => $product->getName(),
+                'price' => $product->getPrice(),
+                'image' => $product->getImage(),
+                'id_category' => $product->getIdCategory(),
+                'stock' => $product->getStock(),
+                'description' => $product->getDescription(),
+                'popularity' => $product->getPopularity(),
+            ];
+        }
+    
+        return $this->json([
+            'success' => true,
+            'produits' => $productData
+        ]);
+    }
+    
     #[Route('/api/products', name: 'add_product', methods: ['POST'])]
     public function addProduct(Request $request): JsonResponse
     {
