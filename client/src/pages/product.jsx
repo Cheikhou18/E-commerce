@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../api/products";
+import Navbar from "../components/navbar";
 
 function ProductDetails() {
   const { id } = useParams();

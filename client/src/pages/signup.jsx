@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requestSignUp } from "../api/auth/authentication";
+import Navbar from "../components/navbar";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -35,6 +36,8 @@ function SignUp() {
   }
 
   return (
+    <div>
+<Navbar/>
     <form onSubmit={(e) => handleSignUp(e)}>
       <h3>Sign Up</h3>
 
@@ -43,7 +46,7 @@ function SignUp() {
         <input
           type="text"
           onChange={(e) => setUser({ ...user, email: e.target.value })}
-        />
+          />
       </div>
 
       <div>
@@ -51,7 +54,7 @@ function SignUp() {
         <input
           type="password"
           onChange={(e) => setUser({ ...user, password: e.target.value })}
-        />
+          />
       </div>
 
       <div>
@@ -59,13 +62,14 @@ function SignUp() {
         <input
           type="password"
           onChange={(e) => setUser({ ...user, confirm: e.target.value })}
-        />
+          />
       </div>
 
       {message}
 
       <button>Submit</button>
     </form>
+          </div>
   );
 }
 

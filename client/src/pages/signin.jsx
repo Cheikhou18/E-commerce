@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { requestSignIn } from "../api/auth/authentication";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/navbar";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ function SignIn() {
   }
 
   return (
+    <div>
+<Navbar/>
     <form onSubmit={(e) => handleSignIn(e)}>
       <h3>Sign In</h3>
 
@@ -40,7 +43,7 @@ function SignIn() {
           type="text"
           placeholder="example@email.com"
           onChange={(e) => setUser({ ...user, email: e.target.value })}
-        />
+          />
       </div>
 
       <div>
@@ -49,13 +52,14 @@ function SignIn() {
           type="text"
           placeholder="********"
           onChange={(e) => setUser({ ...user, password: e.target.value })}
-        />
+          />
       </div>
 
       {message}
 
       <button>Submit</button>
     </form>
+          </div>
   );
 }
 
