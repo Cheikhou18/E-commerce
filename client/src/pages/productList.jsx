@@ -6,7 +6,7 @@ import SortSelect from "../components/sortSelect";
 import CategoryFilter from "../components/categoryFilter";
 import FilteredProducts from "../components/filteredProducts";
 import "../assets/css/Products.css";
-import { Link } from 'react-router-dom';
+import Navbar from "../components/navbar";
 
 
 function ProductList() {
@@ -14,6 +14,7 @@ function ProductList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  
 
   useEffect(() => {
     async function fetchProducts() {
@@ -46,6 +47,8 @@ function ProductList() {
   );
 
   return (
+    <div>
+
     <div className="products-container">
       <h1>Products</h1>
       <div className="filters">
@@ -55,12 +58,13 @@ function ProductList() {
       </div>
       <div className="products-grid">
         {filteredProducts?.map((product) => (
-          <div className="product-card" key={product.id}>
+            <div className="product-card" key={product.id}>
               <ProductCard product={product} />
           </div>
         ))}
       </div>
     </div>
+        </div>
   );
 }
 

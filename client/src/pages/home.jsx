@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getProducts } from "../api/products";
 import ProductCard from "../components/productCard";
 import "../assets/css/Products.css";
+import Navbar from "../components/navbar";
 
 
 
@@ -22,6 +23,8 @@ function Home() {
 
   return (
     <div className="products-container">
+      <Navbar/>
+      
       <h1>Products</h1>
 
       <div className="products-grid">
