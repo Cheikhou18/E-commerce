@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/home";
+import ProductList from "../pages/productList";
 import SignUp from "../pages/signup";
 import SignIn from "../pages/signin";
 import Admin from "../pages/admin";
@@ -13,6 +14,7 @@ function Router() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/products" element={<ProductList />} />
 
         <Route path="/admin" element={<Admin />} />
         <Route path="/products/:id" element={<ProductDetails />} />
