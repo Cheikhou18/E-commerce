@@ -33,26 +33,28 @@ class ProductController extends AbstractController
     {
         $products = $this->entityManager->getRepository(Product::class)
             ->findBy([], ['popularity' => 'DESC']);
-    
+
         $productData = [];
+
         foreach ($products as $product) {
             $productData[] = [
+                'id' => $product->getId(),
                 'name' => $product->getName(),
                 'price' => $product->getPrice(),
                 'image' => $product->getImage(),
-                'id_category' => $product->getIdCategory(),
                 'stock' => $product->getStock(),
-                'description' => $product->getDescription(),
                 'popularity' => $product->getPopularity(),
+                'id_category' => $product->getIdCategory(),
+                'description' => $product->getDescription(),
             ];
         }
-    
+
         return $this->json([
             'success' => true,
             'produits' => $productData
         ]);
     }
-    
+
     #[Route('/api/products', name: 'add_product', methods: ['POST'])]
     public function addProduct(Request $request): JsonResponse
     {
@@ -111,7 +113,7 @@ class ProductController extends AbstractController
 
 
     #[Route('/api/products/{id}', name: 'app_product_details')]
-    public function productdetails(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function getProductDetails(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $id = $request->get('id');
         $product = $entityManager->getRepository(Product::class)->find($id);
@@ -127,9 +129,19 @@ class ProductController extends AbstractController
 
         $entityManager->flush();
 
+        $response = [
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'image' => $product->getImage(),
+            'price' => $product->getPrice(),
+            'stock' => $product->getStock(),
+            'category' => $product->getIdCategory(),
+            'features' => $product->getIdFeatures(),
+        ];
+
         return $this->json([
             'success' => true,
-            'product' => $product,
+            'response' => $response,
         ]);
     }
 }

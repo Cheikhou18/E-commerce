@@ -5,10 +5,8 @@ export async function getProducts() {
 }
 
 export async function getProductsByPopularity() {
-
   return await get("/api/products/popular");
 }
-
 
 export async function getProductById(id) {
   return await get("/api/products/" + id);

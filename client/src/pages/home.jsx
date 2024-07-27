@@ -11,6 +11,7 @@ function Home() {
     async function fetchProducts() {
       const request = await getProductsByPopularity();
       if (request.success) {
+        console.log(request);
         setProducts(request.produits);
       }
     }
@@ -19,10 +20,10 @@ function Home() {
 
   return (
     <div className="products-container">
-      <Navbar/>
+      <Navbar />
       <h1>Top 3 Products</h1>
       <div className="products-grid">
-        {products.slice(0, 3).map((product) => (
+        {products?.slice(0, 3).map((product) => (
           <div className="product-card" key={product.id}>
             <ProductCard product={product} />
           </div>
