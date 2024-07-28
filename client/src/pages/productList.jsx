@@ -7,6 +7,7 @@ import CategoryFilter from "../components/categoryFilter";
 import FilteredProducts from "../components/filteredProducts";
 import "../assets/css/Products.css";
 import Navbar from "../components/navbar";
+import ProductUnavailable from "../components/productUnavailable";
 
 
 function ProductList() {
@@ -58,9 +59,13 @@ function ProductList() {
       </div>
       <div className="products-grid">
         {filteredProducts?.map((product) => (
-            <div className="product-card" key={product.id}>
-              <ProductCard product={product} />
-          </div>
+          <div className="product-card" key={product.id}>
+          {product.stock > 0 ? (
+            <ProductCard product={product} />
+          ) : (
+            <ProductUnavailable product={product} />
+          )}
+        </div>
         ))}
       </div>
     </div>

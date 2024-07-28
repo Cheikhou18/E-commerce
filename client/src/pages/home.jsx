@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getProducts, getProductsByPopularity } from "../api/products";
+import { getProductsByPopularity } from "../api/products";
 import ProductCard from "../components/productCard";
+import ProductUnavailable from "../components/productUnavailable";
 import "../assets/css/Products.css";
 import Navbar from "../components/navbar";
 
@@ -25,7 +26,11 @@ function Home() {
       <div className="products-grid">
         {products?.slice(0, 3).map((product) => (
           <div className="product-card" key={product.id}>
-            <ProductCard product={product} />
+            {product.stock > 0 ? (
+              <ProductCard product={product} />
+            ) : (
+              <ProductUnavailable product={product} />
+            )}
           </div>
         ))}
       </div>
