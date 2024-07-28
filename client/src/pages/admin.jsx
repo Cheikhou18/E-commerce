@@ -9,6 +9,7 @@ import {
 } from "../api/products.js";
 import { createCategory } from "../api/auth/admin.js";
 import ProductForm from "../components/productForm";
+import Navbar from "../components/navbar";
 
 function Admin() {
   const [products, setProducts] = useState();
@@ -93,6 +94,7 @@ function Admin() {
 
   return (
     <div className="flex flex-col gap-6">
+      <Navbar />
       <h3>Categories</h3>
 
       <form onSubmit={(e) => handleCategoryForm(e)}>
