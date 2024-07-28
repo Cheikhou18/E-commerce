@@ -28,6 +28,32 @@ class ProductController extends AbstractController
             'produits' => $products
         ]);
     }
+    #[Route('/api/products/popular', name: 'app_product_popular', methods: ['GET'])]
+    public function getPopularProducts(): JsonResponse
+    {
+        $products = $this->entityManager->getRepository(Product::class)
+            ->findBy([], ['popularity' => 'DESC']);
+
+        $productData = [];
+
+        foreach ($products as $product) {
+            $productData[] = [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'price' => $product->getPrice(),
+                'image' => $product->getImage(),
+                'stock' => $product->getStock(),
+                'popularity' => $product->getPopularity(),
+                'id_category' => $product->getIdCategory(),
+                'description' => $product->getDescription(),
+            ];
+        }
+
+        return $this->json([
+            'success' => true,
+            'produits' => $productData
+        ]);
+    }
 
     #[Route('/api/products', name: 'add_product', methods: ['POST'])]
     public function addProduct(Request $request): JsonResponse
@@ -49,7 +75,7 @@ class ProductController extends AbstractController
         return new JsonResponse(['success' => true, 'message' => 'Product created!'], 201);
     }
 
-    #[Route('/api/products/{id}', name: 'edit_product', methods: ['PUT'])]
+    #[Route('/api/products/{id}', name: 'edit_product', methods: ['PATCH'])]
     public function editProduct($id, Request $request): JsonResponse
     {
 
@@ -72,8 +98,6 @@ class ProductController extends AbstractController
     #[Route('/api/products/{id}', name: 'delete_product', methods: ['DELETE'])]
     public function deleteProduct($id): JsonResponse
     {
-
-
         $product = $this->entityManager->getRepository(Product::class)->find($id);
 
         if (!$product) {
@@ -89,7 +113,7 @@ class ProductController extends AbstractController
 
 
     #[Route('/api/products/{id}', name: 'app_product_details')]
-    public function productdetails(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function getProductDetails(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $id = $request->get('id');
         $product = $entityManager->getRepository(Product::class)->find($id);
@@ -105,9 +129,19 @@ class ProductController extends AbstractController
 
         $entityManager->flush();
 
+        $response = [
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'image' => $product->getImage(),
+            'price' => $product->getPrice(),
+            'stock' => $product->getStock(),
+            'category' => $product->getIdCategory(),
+            'features' => $product->getIdFeatures(),
+        ];
+
         return $this->json([
             'success' => true,
-            'product' => $product,
+            'response' => $response,
         ]);
     }
 }
