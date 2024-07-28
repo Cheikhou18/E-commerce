@@ -50,7 +50,6 @@ function Admin() {
   };
 
   const handleEditProduct = async (data) => {
-    console.log(selectedProduct, data);
     const request = await editProduct(selectedProduct.id, data);
     if (request.success) {
       fetchProducts();
@@ -97,18 +96,21 @@ function Admin() {
       <h3>Categories</h3>
 
       <form onSubmit={(e) => handleCategoryForm(e)}>
-        <div className="flex flex-col w-fit">
+        <div className="flex flex-col gap-2 w-fit">
           <label>Create a category</label>
           <input
             type="text"
             placeholder="Category name..."
+            className="border rounded-sm px-4 py-2"
             onChange={(e) => setNewCategory(e.target.value)}
           />
+
+          {message.categories}
+
+          <button className="border rounded-xl px-4 py-2">
+            Create category
+          </button>
         </div>
-
-        {message.categories}
-
-        <button>Create category</button>
       </form>
 
       <h3>Products</h3>
