@@ -12,7 +12,6 @@ function Home() {
     async function fetchProducts() {
       const request = await getProductsByPopularity();
       if (request.success) {
-        console.log(request);
         setProducts(request.produits);
       }
     }

@@ -10,12 +10,16 @@ import {
 import { createCategory } from "../api/auth/admin.js";
 import ProductForm from "../components/productForm";
 import Navbar from "../components/navbar";
+import AddCategory from "../components/createCategory.jsx";
+import { getCategories } from "../api/categories.js";
 
 function Admin() {
   const [products, setProducts] = useState();
-  const [newCategory, setNewCategory] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [categories, setCategories] = useState();
+
   const [isFormVisible, setFormVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const [message, setMessage] = useState({ categories: "", products: "" });
 
   const navigate = useNavigate();
@@ -24,11 +28,17 @@ function Admin() {
   useEffect(() => {
     if (isAdmin === false) return navigate("/");
     fetchProducts();
+    fetchCategories();
   }, [isAdmin]);
 
   async function fetchProducts() {
     const request = await getProducts();
     if (request.success) setProducts(request.produits);
+  }
+
+  async function fetchCategories() {
+    const request = await getCategories();
+    if (request.success) setCategories(request.categories);
   }
 
   function displayMessage(field, mess) {
@@ -80,44 +90,27 @@ function Admin() {
     setFormVisible(true);
   }
 
-  async function handleCategoryForm(e) {
-    e.preventDefault();
-
-    if (newCategory === "")
-      return displayMessage("categories", "Please insert a name");
-
-    const request = await createCategory(newCategory);
-    setMessage(request.message);
-
-    setTimeout(() => setMessage({ ...message, categories: "" }), 2 * 1000);
-  }
-
   return (
     <div className="flex flex-col gap-6">
       <Navbar />
-      <h3>Categories</h3>
 
-      <form onSubmit={(e) => handleCategoryForm(e)}>
-        <div className="flex flex-col gap-2 w-fit">
-          <label>Create a category</label>
-          <input
-            type="text"
-            placeholder="Category name..."
-            className="border rounded-sm px-4 py-2"
-            onChange={(e) => setNewCategory(e.target.value)}
-          />
+      <div className="flex flex-col">
+        <h3 className="text-xl font-bold p-10">Categories</h3>
 
-          {message.categories}
+        <ul className="flex flex-col">
+          {categories?.map((category) => (
+            <li key={category.id} className="border-t p-4">
+              {category.name}
+            </li>
+          ))}
 
-          <button className="border rounded-xl px-4 py-2">
-            Create category
-          </button>
-        </div>
-      </form>
+          <li className="flex justify-center border-b pb-8">
+            <AddCategory />
+          </li>
+        </ul>
+      </div>
 
-      <h3>Products</h3>
-
-      <button onClick={openFormToAdd}>Add Product</button>
+      <h3 className="text-xl font-bold p-10">Products</h3>
 
       {isFormVisible && (
         <ProductForm
@@ -132,7 +125,7 @@ function Admin() {
         {products?.map((product) => (
           <li className="border-t p-4" key={product.id}>
             {product.name} - {product.price}€
-            <div>
+            <div className="flex gap-4">
               <button onClick={() => openFormToEdit(product)}>Edit</button>
               <button onClick={() => handleDeleteProduct(product.id)}>
                 Delete
@@ -140,6 +133,10 @@ function Admin() {
             </div>
           </li>
         ))}
+
+        <li className="border-y flex justify-center p-8">
+          <button onClick={openFormToAdd}>+ Add a product</button>
+        </li>
       </ul>
     </div>
   );

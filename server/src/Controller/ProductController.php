@@ -87,8 +87,11 @@ class ProductController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
         $product->setName($data['name']);
-        $product->setDescription($data['description']);
         $product->setPrice($data['price']);
+        $product->setImage($data['image']);
+        $product->setStock($data['stock']);
+        $product->setDescription($data['description']);
+
 
         $this->entityManager->flush();
 
