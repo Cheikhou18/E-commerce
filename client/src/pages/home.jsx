@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getProductsByPopularity } from "../api/products";
+
 import ProductCard from "../components/productCard";
 import ProductUnavailable from "../components/productUnavailable";
 import "../assets/css/Products.css";
 import Navbar from "../components/navbar";
+import ProductCarousel from "../components/productCarousel"; 
+import "../assets/css/Products.css";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -22,6 +25,7 @@ function Home() {
     <div className="products-container">
       <Navbar />
       <h1>Top 3 Products</h1>
+
       <div className="products-grid">
         {products?.slice(0, 3).map((product) => (
           <div className="product-card" key={product.id}>
@@ -33,6 +37,9 @@ function Home() {
           </div>
         ))}
       </div>
+
+      <ProductCarousel products={products.slice(0, 3)} />
+
     </div>
   );
 }
