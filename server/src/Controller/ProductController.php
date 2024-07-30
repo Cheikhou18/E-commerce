@@ -75,7 +75,7 @@ class ProductController extends AbstractController
         return new JsonResponse(['success' => true, 'message' => 'Product created!'], 201);
     }
 
-    #[Route('/api/products/{id}', name: 'edit_product', methods: ['PUT'])]
+    #[Route('/api/products/{id}', name: 'edit_product', methods: ['PATCH'])]
     public function editProduct($id, Request $request): JsonResponse
     {
 
@@ -87,8 +87,12 @@ class ProductController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
         $product->setName($data['name']);
-        $product->setDescription($data['description']);
         $product->setPrice($data['price']);
+        $product->setImage($data['image']);
+        $product->setStock($data['stock']);
+        $product->setIdCategory($data['id_category']);
+        $product->setDescription($data['description']);
+
 
         $this->entityManager->flush();
 

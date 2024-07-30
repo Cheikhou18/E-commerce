@@ -17,26 +17,40 @@ class CategoryController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/categories', name: 'app_category')]
+    #[Route('/api/categories', name: 'app_category', methods: ['GET'])]
     public function getCategories(): JsonResponse
     {
         $categories = $this->em->getRepository(Category::class)->findAll();
-
         if (!$categories) return $this->json(['success' => false]);
+
+        $response = [];
+
+        foreach ($categories as $category) {
+            $response[] = [
+                "id" => $category->getId(),
+                "name" => $category->getName(),
+            ];
+        }
 
         return $this->json([
             'success' => true,
-            'categories' => $categories
+            'categories' => $response
         ]);
     }
 
-    #[Route('/categories', name: 'app_category', methods: ['POST'])]
+    #[Route('/api/categories', name: 'app_create_category', methods: ['POST'])]
     public function createCategory(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), false);
-        $categoryExists = $this->em->getRepository(Category::class)->findByName($data->name());
+        $categoryExists = $this->em->getRepository(Category::class)->findByName($data->name);
 
         if ($categoryExists) return $this->json(['success' => false, 'message' => 'Category already exists']);
+
+        $newCategory = new Category();
+        $newCategory->setName($data->name);
+
+        $this->em->persist($newCategory);
+        $this->em->flush();
 
         return $this->json([
             'success' => true,
@@ -44,7 +58,7 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/categories/{id}', name: 'app_category', methods: ['PUT'])]
+    #[Route('/api/categories/{id}', name: 'app_patch_category', methods: ['PATCH'])]
     public function editCategory($id, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), false);
@@ -61,10 +75,10 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/categories/{id}', name: 'app_category', methods: ['DELETE'])]
+    #[Route('/api/categories/{id}', name: 'app_delete_category', methods: ['DELETE'])]
     public function deleteCategory($id): JsonResponse
     {
-        $categoryExists = $this->em->getRepository(Category::class)->findById($id);
+        $categoryExists = $this->em->getRepository(Category::class)->find($id);
 
         if (!$categoryExists) return $this->json(['success' => false, 'message' => 'Category does not exist']);
 

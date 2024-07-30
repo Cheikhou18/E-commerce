@@ -8,10 +8,19 @@ import {
   getProducts,
 } from "../api/products.js";
 import { createCategory } from "../api/auth/admin.js";
+import ProductForm from "../components/productForm";
+import Navbar from "../components/navbar";
+import AddCategory from "../components/createCategory.jsx";
+import { getCategories } from "../api/categories.js";
+import CategoryCard from "../components/categoryCard.jsx";
 
 function Admin() {
   const [products, setProducts] = useState();
-  const [newCategory, setNewCategory] = useState();
+  const [categories, setCategories] = useState();
+
+  const [isFormVisible, setFormVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const [message, setMessage] = useState({ categories: "", products: "" });
 
   const navigate = useNavigate();
@@ -20,6 +29,7 @@ function Admin() {
   useEffect(() => {
     if (isAdmin === false) return navigate("/");
     fetchProducts();
+    fetchCategories();
   }, [isAdmin]);
 
   async function fetchProducts() {
@@ -27,98 +37,109 @@ function Admin() {
     if (request.success) setProducts(request.produits);
   }
 
-  const handleAddProduct = async () => {
-    try {
-      await addProduct({
-        name: "New Product 3",
-        description: "Product description",
-        id_category: 1,
-        image: "",
-        price: 100,
-        stock: 20,
-      });
+  async function fetchCategories() {
+    const request = await getCategories();
+    if (request.success) setCategories(request.categories);
+  }
 
+  function displayMessage(field, mess) {
+    setMessage((currMessages) => {
+      return { ...currMessages, [field]: mess };
+    });
+
+    // Clears the message after 2 seconds
+    return setTimeout(() => setMessage({ ...message, [field]: "" }), 2 * 1000);
+  }
+
+  const handleAddProduct = async (data) => {
+    const request = await addProduct(data);
+    if (request.success) {
       fetchProducts();
-    } catch (error) {
-      console.error("Erreur lors de la création du produit:", error);
     }
+
+    displayMessage("products", request.message);
+    setFormVisible(false);
   };
 
-  const handleEditProduct = async (id) => {
-    try {
-      await editProduct(id, {
-        name: "Updated Product",
-        description: "Updated description",
-        price: 150,
-      });
-
+  const handleEditProduct = async (data) => {
+    const request = await editProduct(selectedProduct.id, data);
+    if (request.success) {
       fetchProducts();
-    } catch (error) {
-      console.error("Erreur lors de la modification du produit:", error);
     }
+
+    displayMessage("products", request.message);
+    setFormVisible(false);
+    setSelectedProduct(null);
   };
 
   const handleDeleteProduct = async (id) => {
-    try {
-      await deleteProduct(id);
+    const request = await deleteProduct(id);
+
+    if (request.success) {
+      displayMessage("products", request.message);
       fetchProducts();
-    } catch (error) {
-      console.error("Erreur lors de la suppression du produit:", error);
     }
   };
 
-  async function handleCategoryForm(e) {
-    e.preventDefault();
+  function openFormToAdd() {
+    setSelectedProduct(null);
+    setFormVisible(true);
+  }
 
-    const request = await createCategory(newCategory);
-
-    setMessage(request.message);
-
-    // Clears the message after 2 seconds
-    setTimeout(() => setMessage({ ...message, categories: "" }), 2 * 1000);
+  function openFormToEdit(product) {
+    setSelectedProduct(product);
+    setFormVisible(true);
   }
 
   return (
     <div className="flex flex-col gap-6">
-      <h3>Categories</h3>
+      <Navbar />
 
-      <form onSubmit={(e) => handleCategoryForm(e)}>
-        <div className="flex flex-col w-fit">
-          <label>Create a category</label>
-          <input
-            type="text"
-            placeholder="Category name..."
-            onChange={(e) => setNewCategory(e.target.value)}
-          />
-        </div>
+      <div className="flex flex-col">
+        <h3 className="text-xl font-bold p-10">Categories</h3>
 
-        {message.categories}
+        <ul className="flex flex-col">
+          {categories?.map((category) => (
+            <li key={category.id} className="border-t p-4">
+              <CategoryCard
+                props={{ category, setMessage, setCategories, fetchCategories }}
+              />
+            </li>
+          ))}
 
-        <button>Create category</button>
-      </form>
+          <li className="flex justify-center border-b pb-8">
+            <AddCategory props={{ setCategories }} />
+          </li>
+        </ul>
+      </div>
 
-      <h3>Products</h3>
+      <h3 className="text-xl font-bold p-10">Products</h3>
 
-      <button onClick={handleAddProduct}>Add Product</button>
+      {isFormVisible && (
+        <ProductForm
+          product={selectedProduct}
+          onSubmit={selectedProduct ? handleEditProduct : handleAddProduct}
+        />
+      )}
+
+      {message.products}
 
       <ul>
         {products?.map((product) => (
           <li className="border-t p-4" key={product.id}>
-            <p>
-              {product.name} - {product.price}€
-            </p>
-
-            <div>
-              <button onClick={() => handleEditProduct(product.id)}>
-                Edit
-              </button>
-
+            {product.name} - {product.price}€
+            <div className="flex gap-4">
+              <button onClick={() => openFormToEdit(product)}>Edit</button>
               <button onClick={() => handleDeleteProduct(product.id)}>
                 Delete
               </button>
             </div>
           </li>
         ))}
+
+        <li className="border-y flex justify-center p-8">
+          <button onClick={openFormToAdd}>+ Add a product</button>
+        </li>
       </ul>
     </div>
   );

@@ -20,6 +20,7 @@ function ProductDetails() {
     <div className="flex flex-col h-screen justify-center items-center">
       {/* If product, display product details else display error */}
       {product ? (
+        
         <div className="flex flex-col gap-12">
           <h2 className="text-xl font-bold">{product.name}</h2>
           <img src={product.image} alt={product.name} />

@@ -5,7 +5,7 @@ async function api(method, path, data = {}) {
     method: method,
     headers: {
       "Content-Type": "application/json",
-    }
+    },
   };
 
   if (method !== "GET") {
@@ -31,7 +31,7 @@ async function post(path, data = {}) {
 }
 
 async function update(path, data = {}) {
-  return await api("UPDATE", path, data);
+  return await api("PATCH", path, data);
 }
 
 async function remove(path, data = {}) {
