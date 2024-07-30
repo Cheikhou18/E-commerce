@@ -108,3 +108,29 @@ ul li {
   padding: 9px;
   width: 1000px;
 }
+.search-option {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.search-option-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.search-option-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-option-name {
+  font-weight: bold;
+}
+
+.search-option-price {
+  font-size: 0.8em;
+  color: gray;
+}

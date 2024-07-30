@@ -9,14 +9,13 @@ import "../assets/css/Products.css";
 import Navbar from "../components/navbar";
 import ProductUnavailable from "../components/productUnavailable";
 
-
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  
-// Fetch the API and send it to const "products"
+
+  // Fetch the API and send it to const "products"
   useEffect(() => {
     async function fetchProducts() {
       const request = await getProducts();
@@ -40,7 +39,6 @@ function ProductList() {
     setCategoryFilter(categoryFilter);
   };
 
-
   const filteredProducts = FilteredProducts(
     products,
     searchTerm,
@@ -48,8 +46,13 @@ function ProductList() {
     categoryFilter
   );
 
-  // define all suggestions with the name of the products
-  const allSuggestions = products.map((product) => product.name); 
+  // Define all suggestions with the name, image, and price of the products
+  const allSuggestions = products.map((product) => ({
+    id: product.id,
+    name: product.name,
+    image: product.image,
+    price: product.price 
+  }));
 
   return (
     <div>
