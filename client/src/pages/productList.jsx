@@ -16,7 +16,7 @@ function ProductList() {
   const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   
-
+// Fetch the API and send it to const "products"
   useEffect(() => {
     async function fetchProducts() {
       const request = await getProducts();
@@ -27,14 +27,15 @@ function ProductList() {
     fetchProducts();
   }, []);
 
+  // Handle the changes on the searchBar
   const handleSearchChange = (searchTerm) => {
     setSearchTerm(searchTerm);
   };
-
+  // Handle the changes on the sortList
   const handleSortChange = (sortOrder) => {
     setSortOrder(sortOrder);
   };
-
+  // Handle the changes on the categoryList
   const handleCategoryChange = (categoryFilter) => {
     setCategoryFilter(categoryFilter);
   };
@@ -47,29 +48,34 @@ function ProductList() {
     categoryFilter
   );
 
+  // define all suggestions with the name of the products
+  const allSuggestions = products.map((product) => product.name); 
+
   return (
     <div>
-        <Navbar/>
-    <div className="products-container">
-      <h1>Products</h1>
-      <div className="filters">
-        <SearchBar onSearchChange={handleSearchChange} />
-        <SortSelect onSortChange={handleSortChange} />
-        <CategoryFilter onCategoryChange={handleCategoryChange} />
-      </div>
-      <div className="products-grid">
-        {filteredProducts?.map((product) => (
-          <div className="product-card" key={product.id}>
-          {product.stock > 0 ? (
-            <ProductCard product={product} />
-          ) : (
-            <ProductUnavailable product={product} />
-          )}
+      <Navbar />
+      <div className="products-container">
+        <h1>Products</h1>
+        {/* When search changes we call suggestions and handleSearchChange, same for sort and categories */}
+        <div className="filters">
+          <SearchBar onSearchChange={handleSearchChange} suggestions={allSuggestions} />
+          <SortSelect onSortChange={handleSortChange} />
+          <CategoryFilter onCategoryChange={handleCategoryChange} />
         </div>
-        ))}
+        <div className="products-grid">
+          {/* call either ProductCard or ProductUnavailable */}
+          {filteredProducts?.map((product) => (
+            <div className="product-card" key={product.id}>
+              {product.stock > 0 ? (
+                <ProductCard product={product} />
+              ) : (
+                <ProductUnavailable product={product} />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-        </div>
   );
 }
 
