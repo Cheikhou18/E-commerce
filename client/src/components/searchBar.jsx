@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar({ onSearchChange, suggestions }) {
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
+  const navigate = useNavigate();  // useNavigate pour naviguer
 
   // Verify if input value is defined
   useEffect(() => {
@@ -25,13 +27,21 @@ function SearchBar({ onSearchChange, suggestions }) {
     onSearchChange(newInputValue);
   };
 
+  // Handle the option selection and navigate to product details page
+  const handleOptionSelect = (event, value) => {
+    if (value) {
+      navigate(`/products/${value.id}`);
+    }
+  };
+
   return (
-    // we use Autocomplete to display suggestions
+    // use Autocomplete to display suggestions
     <Autocomplete
       freeSolo
       options={options}
       inputValue={inputValue}
       onInputChange={handleInputChange}
+      onChange={handleOptionSelect} // handle option selection
       getOptionLabel={(option) => option.name}
       renderOption={(props, option) => (
         // render each option with image, name and price
