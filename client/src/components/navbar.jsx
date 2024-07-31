@@ -15,7 +15,7 @@ function Navbar() {
       <button className="text-white" onClick={() => changeViewCart()}>
         Cart
         {cartQuantity > 0 && (
-          <span className="flex absolute text-xs translate-x-6 -translate-y-2 rounded-xl px-2 py-1 bg-red-600">
+          <span className="flex absolute text-xs translate-x-5 -translate-y-2 rounded-xl px-2 py-1 bg-red-600">
             {cartQuantity}
           </span>
         )}

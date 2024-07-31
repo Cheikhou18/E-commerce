@@ -36,6 +36,12 @@ function CartProvider({ children }) {
   }
 
   function increaseProductQuantity(id) {
+    const currProductQuantity = getProductQuantity(id);
+    const productsInStock =
+      productsInDB?.find((product) => product.id === id)?.stock || 0;
+
+    if (currProductQuantity >= productsInStock) return null;
+
     setCartProducts((currProducts) => {
       if (currProducts.find((product) => product.id === id) == null) {
         return [...currProducts, { id, quantity: 1 }];
