@@ -37,7 +37,7 @@ function ProductDetails() {
           </div>
 
           <button
-            onClick={() => increaseProductQuantity(id)}
+            onClick={() => increaseProductQuantity(product.id)}
             className="px-4 py-2 bg-green-400 hover:bg-green-800 rounded-xl"
           >
             Add to cart

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { getProducts } from "../api/products";
 import { useCartContext } from "../context/cart";
 import { ProductsInCart } from "./productsInCart";
 

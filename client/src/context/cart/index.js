@@ -27,8 +27,8 @@ function CartProvider({ children }) {
   }, [cartProducts]);
 
   const cartQuantity = cartProducts.reduce(
-    (quantity, product) => product.quantity + quantity,
-    -2
+    (quantity, product) => quantity + product.quantity,
+    0
   );
 
   function getProductQuantity(id) {
