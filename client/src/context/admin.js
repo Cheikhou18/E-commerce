@@ -1,25 +1,34 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { post } from "../api";
+import { get } from "../api";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const [user, setUser] = useState();
   const [isAdmin, setIsAdmin] = useState();
 
   useEffect(() => {
     const id = localStorage.getItem("id");
 
-    if (!id) return setIsAdmin(false);
+    if (!id) {
+      setIsAdmin(false);
+      setUser({});
+      return;
+    }
 
     async function fetchUser() {
-      const request = await post("/api/admin/verif", { id });
+      const request = await get("/api/users/" + id);
 
       if (!request.success) {
-        return setIsAdmin(false);
+        setIsAdmin(false);
+        return setUser({});
       }
 
-      if (request.roles.includes("ROLE_ADMIN")) {
-        return setIsAdmin(true);
+      const userData = request.response;
+      setUser(userData);
+
+      if (userData?.roles.includes("ROLE_ADMIN")) {
+        setIsAdmin(true);
       }
     }
 
@@ -27,7 +36,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAdmin }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isAdmin }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 
