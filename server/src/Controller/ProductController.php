@@ -90,6 +90,7 @@ class ProductController extends AbstractController
         $product->setPrice($data['price']);
         $product->setImage($data['image']);
         $product->setStock($data['stock']);
+        $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
 
 

@@ -91,6 +91,7 @@ ul li {
   border-radius: 5px;
   transition: background-color 0.3s;
 }
+
 .product-image-grey {
   width: 100%;
   height: auto;
@@ -103,6 +104,7 @@ ul li {
   padding: 10px;
   text-align: center;
   background-color: #f2f2f2;
+
 }
 .css-ka7ti6-MuiAutocomplete-root .MuiOutlinedInput-root {
   padding: 9px;
@@ -133,4 +135,3 @@ ul li {
 .search-option-price {
   font-size: 0.8em;
   color: gray;
-}

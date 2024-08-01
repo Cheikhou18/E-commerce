@@ -12,6 +12,7 @@ import ProductForm from "../components/productForm";
 import Navbar from "../components/navbar";
 import AddCategory from "../components/createCategory.jsx";
 import { getCategories } from "../api/categories.js";
+import CategoryCard from "../components/categoryCard.jsx";
 
 function Admin() {
   const [products, setProducts] = useState();
@@ -100,12 +101,14 @@ function Admin() {
         <ul className="flex flex-col">
           {categories?.map((category) => (
             <li key={category.id} className="border-t p-4">
-              {category.name}
+              <CategoryCard
+                props={{ category, setMessage, setCategories, fetchCategories }}
+              />
             </li>
           ))}
 
           <li className="flex justify-center border-b pb-8">
-            <AddCategory />
+            <AddCategory props={{ setCategories }} />
           </li>
         </ul>
       </div>
