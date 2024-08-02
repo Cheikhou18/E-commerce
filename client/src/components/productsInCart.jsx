@@ -8,6 +8,8 @@ export function ProductsInCart({ id, quantity }) {
 
   return (
     <div className="flex m-4 p-4 justify-between items-center border">
+      <img width="50px" src={product.image} alt={product.name} />
+
       <div className="flex-col">
         <span className="flex items-center">
           <h3 className="pr-2">{product.name}</h3>
