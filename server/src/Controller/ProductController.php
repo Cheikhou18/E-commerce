@@ -68,6 +68,8 @@ class ProductController extends AbstractController
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setPopularity(0);
+        $product->setRecommended($data['recommended']);
+        $product->setLowStock($data['low_stock']);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -92,7 +94,8 @@ class ProductController extends AbstractController
         $product->setStock($data['stock']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
-
+        $product->setRecommended($data['recommended']);
+        $product->setLowStock($data['low_stock']);
 
         $this->entityManager->flush();
 
