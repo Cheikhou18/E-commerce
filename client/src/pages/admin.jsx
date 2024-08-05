@@ -7,12 +7,10 @@ import {
   editProduct,
   getProducts,
 } from "../api/products.js";
-import { createCategory } from "../api/auth/admin.js";
 import ProductForm from "../components/productForm";
-import Navbar from "../components/navbar";
-import AddCategory from "../components/createCategory.jsx";
 import { getCategories } from "../api/categories.js";
 import CategoryCard from "../components/categoryCard.jsx";
+import AddCategory from "../components/createCategory.jsx";
 
 function Admin() {
   const [products, setProducts] = useState();
@@ -93,8 +91,6 @@ function Admin() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Navbar />
-
       <div className="flex flex-col">
         <h3 className="text-xl font-bold p-10">Categories</h3>
 

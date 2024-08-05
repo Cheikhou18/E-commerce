@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { requestSignIn } from "../api/auth/authentication";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/navbar";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -33,33 +32,32 @@ function SignIn() {
 
   return (
     <div>
-<Navbar/>
-    <form onSubmit={(e) => handleSignIn(e)}>
-      <h3>Sign In</h3>
+      <form onSubmit={(e) => handleSignIn(e)}>
+        <h3>Sign In</h3>
 
-      <div>
-        <label>E-mail</label>
-        <input
-          type="text"
-          placeholder="example@email.com"
-          onChange={(e) => setUser({ ...user, email: e.target.value })}
+        <div>
+          <label>E-mail</label>
+          <input
+            type="text"
+            placeholder="example@email.com"
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
           />
-      </div>
+        </div>
 
-      <div>
-        <label>Password</label>
-        <input
-          type="text"
-          placeholder="********"
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
+        <div>
+          <label>Password</label>
+          <input
+            type="text"
+            placeholder="********"
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
           />
-      </div>
+        </div>
 
-      {message}
+        {message}
 
-      <button>Submit</button>
-    </form>
-          </div>
+        <button>Submit</button>
+      </form>
+    </div>
   );
 }
 

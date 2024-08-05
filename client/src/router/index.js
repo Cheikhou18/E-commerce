@@ -5,6 +5,7 @@ import Admin from "../pages/admin";
 import SignUp from "../pages/signup";
 import SignIn from "../pages/signin";
 import Profile from "../pages/profile";
+import Navbar from "../components/navbar";
 import ProductDetails from "../pages/product";
 import ProductList from "../pages/productList";
 import Breadcrumbs from "../components/breadcrumbs";
@@ -12,6 +13,7 @@ import Breadcrumbs from "../components/breadcrumbs";
 function Router() {
   return (
     <BrowserRouter>
+      <Navbar />
       <Breadcrumbs />
 
       <Routes>

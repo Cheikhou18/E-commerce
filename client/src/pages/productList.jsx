@@ -6,7 +6,6 @@ import SortSelect from "../components/sortSelect";
 import CategoryFilter from "../components/categoryFilter";
 import FilteredProducts from "../components/filteredProducts";
 import "../assets/css/Products.css";
-import Navbar from "../components/navbar";
 import ProductUnavailable from "../components/productUnavailable";
 
 function ProductList() {
@@ -51,17 +50,19 @@ function ProductList() {
     id: product.id,
     name: product.name,
     image: product.image,
-    price: product.price 
+    price: product.price,
   }));
 
   return (
     <div>
-      <Navbar />
       <div className="products-container">
         <h1>Products</h1>
         {/* When search changes we call suggestions and handleSearchChange, same for sort and categories */}
         <div className="filters">
-          <SearchBar onSearchChange={handleSearchChange} suggestions={allSuggestions} />
+          <SearchBar
+            onSearchChange={handleSearchChange}
+            suggestions={allSuggestions}
+          />
           <SortSelect onSortChange={handleSortChange} />
           <CategoryFilter onCategoryChange={handleCategoryChange} />
         </div>

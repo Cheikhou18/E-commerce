@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getProductById } from "../api/products";
 import { useCartContext } from "../context/cart";
-import Navbar from "../components/navbar";
 
 function ProductDetails() {
   const { id } = useParams();
