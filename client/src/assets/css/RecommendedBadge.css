@@ -1,0 +1,14 @@
+.recommended-badge {
+    position: absolute;
+    bottom: -30px; /* Positionne le badge à 10px du bas */
+    left: 20px;   /* Positionne le badge à 10px du côté gauche */
+    background-color: #ffcc00;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.7em; /* Réduit la taille de la police */
+    font-weight: bold;
+    z-index: 1; /* Assure que le badge est au-dessus de l'image */
+  }
+  
+  
