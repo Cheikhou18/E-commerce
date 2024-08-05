@@ -6,7 +6,7 @@ function Navbar() {
   const { changeViewCart, cartQuantity } = useCartContext();
 
   return (
-    <div className="navbar">
+    <nav className="navbar">
       <Link to={"/"}>Home</Link>
       <Link to={"/products"}>All glasses</Link>
       <Link to={"/signin"}>Sign in</Link>
@@ -20,7 +20,7 @@ function Navbar() {
           </span>
         )}
       </button>
-    </div>
+    </nav>
   );
 }
 export default Navbar;
