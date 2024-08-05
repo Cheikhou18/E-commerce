@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getProductById } from "../api/products";
+import { getProductById, getProductByName } from "../api/products";
 import { useCartContext } from "../context/cart";
 import Navbar from "../components/navbar";
 
 function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState();
+  const [similarProducts, setSimilarProducts] = useState([]);
   const { increaseProductQuantity } = useCartContext();
 
   useEffect(() => {
     async function fetchDetails() {
       const request = await getProductById(id);
-      if (request.success) setProduct(request.response);
+      if (request.success) {
+        setProduct(request.response);
+
+        const similarRequest = await getProductByName(request.response.name);
+        if (similarRequest.success) {
+          setSimilarProducts(similarRequest.response);
+        }
+      }
     }
 
     fetchDetails();
@@ -20,6 +28,7 @@ function ProductDetails() {
 
   return (
     <div className="flex flex-col h-screen justify-center items-center">
+      <Navbar />
       {/* If product, display product details else display error */}
       {product ? (
         <div className="flex flex-col gap-12">
@@ -42,6 +51,23 @@ function ProductDetails() {
           >
             Add to cart
           </button>
+
+          <div>
+            <h3 className="text-lg font-bold">Similar Products</h3>
+            <div className="flex flex-col gap-4">
+              {similarProducts.map((similarProduct) => (
+                <Link
+                  to={`/products/${similarProduct.id}`}
+                  key={similarProduct.id}
+                  className="flex flex-col items-center border p-4 rounded-lg"
+                >
+                  <h4>{similarProduct.name}</h4>
+                  <img src={similarProduct.image} alt={similarProduct.name} />
+                  <p>{similarProduct.price} €</p>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       ) : (
         <p>
