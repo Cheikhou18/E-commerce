@@ -146,6 +146,7 @@ class ProductController extends AbstractController
             'stock' => $product->getStock(),
             'category' => $product->getIdCategory(),
             'features' => $product->getIdFeatures(),
+            'description' => $product->getDescription(),
         ];
 
         return $this->json([
