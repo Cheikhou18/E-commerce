@@ -38,6 +38,13 @@ class Product
     #[ORM\Column]
     private ?int $stock = null;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private ?bool $lowStock = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $recommended = false;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +142,30 @@ class Product
     public function setStock(int $stock): static
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getLowStock(): bool
+    {
+        return $this->lowStock;
+    }
+
+    public function setLowStock(bool $lowStock): static
+    {
+        $this->lowStock = $lowStock;
+
+        return $this;
+    }
+
+    public function getRecommended(): bool
+    {
+        return $this->recommended;
+    }
+
+    public function setRecommended(bool $recommended): static
+    {
+        $this->recommended = $recommended;
 
         return $this;
     }
