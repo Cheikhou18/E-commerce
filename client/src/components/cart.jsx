@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { useCartContext } from "../context/cart";
 import { ProductsInCart } from "./productsInCart";
@@ -22,6 +22,13 @@ function Cart() {
       {cartProducts?.map((product) => (
         <ProductsInCart key={product.id} {...product} />
       ))}
+
+      <Link
+        className="flex justify-center w-80 p-6 absolute bottom-0 right-0 bg-green-400"
+        to="/cart"
+      >
+        Proceed to payment
+      </Link>
     </div>
   );
 }
