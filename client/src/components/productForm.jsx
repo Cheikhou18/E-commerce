@@ -65,7 +65,6 @@ const ProductForm = ({ product, onSubmit }) => {
       <div>
         <label>Stock</label>
         <input name="stock" type="number" value={formData.stock} onChange={handleChange} required />
-        {formData.stock < 10 && <p style={{color: 'red'}}>Attention, il reste moins de 10 articles en stock.</p>}
       </div>
       <div>
         <label>Image</label>
