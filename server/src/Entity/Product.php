@@ -39,9 +39,6 @@ class Product
     private ?int $stock = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private ?bool $lowStock = false;
-
-    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $recommended = false;
 
 
@@ -142,18 +139,6 @@ class Product
     public function setStock(int $stock): static
     {
         $this->stock = $stock;
-
-        return $this;
-    }
-
-    public function getLowStock(): bool
-    {
-        return $this->lowStock;
-    }
-
-    public function setLowStock(bool $lowStock): static
-    {
-        $this->lowStock = $lowStock;
 
         return $this;
     }

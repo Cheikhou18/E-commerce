@@ -8,6 +8,7 @@ const ProductForm = ({ product, onSubmit }) => {
     stock: '',
     image: '',
     id_category: '',
+    recommended: false,
   });
 
   useEffect(() => {
@@ -19,13 +20,18 @@ const ProductForm = ({ product, onSubmit }) => {
         stock: product.stock || '',
         image: product.image || '',
         id_category: product.id_category || '',
+        recommended: product.recommended || false,
       });
     }
   }, [product]);
 
+  
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
   };
 
   const handleSubmit = (e) => {
@@ -38,6 +44,7 @@ const ProductForm = ({ product, onSubmit }) => {
       stock: '',
       image: '',
       id_category: '',
+      recommended: false,
     });
   };
 
@@ -58,6 +65,7 @@ const ProductForm = ({ product, onSubmit }) => {
       <div>
         <label>Stock</label>
         <input name="stock" type="number" value={formData.stock} onChange={handleChange} required />
+        {formData.stock < 10 && <p style={{color: 'red'}}>Attention, il reste moins de 10 articles en stock.</p>}
       </div>
       <div>
         <label>Image</label>
@@ -66,6 +74,10 @@ const ProductForm = ({ product, onSubmit }) => {
       <div>
         <label>Category ID</label>
         <input name="id_category" type="number" value={formData.id_category} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Recommended</label>
+        <input name="recommended" type="checkbox" checked={formData.recommended} onChange={handleChange} />
       </div>
       <button type="submit">Submit</button>
     </form>
