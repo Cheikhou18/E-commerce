@@ -11,9 +11,10 @@ import ProductForm from "../components/productForm";
 import { getCategories } from "../api/categories.js";
 import CategoryCard from "../components/categoryCard.jsx";
 import AddCategory from "../components/createCategory.jsx";
+import { useCartContext } from "../context/cart/index.js";
 
 function Admin() {
-  const [products, setProducts] = useState();
+  const { productsInDB, fetchProductsFromDB } = useCartContext();
   const [categories, setCategories] = useState();
 
   const [isFormVisible, setFormVisible] = useState(false);
@@ -26,14 +27,8 @@ function Admin() {
 
   useEffect(() => {
     if (isAdmin === false) return navigate("/");
-    fetchProducts();
     fetchCategories();
   }, [isAdmin]);
-
-  async function fetchProducts() {
-    const request = await getProducts();
-    if (request.success) setProducts(request.produits);
-  }
 
   async function fetchCategories() {
     const request = await getCategories();
@@ -52,7 +47,7 @@ function Admin() {
   const handleAddProduct = async (data) => {
     const request = await addProduct(data);
     if (request.success) {
-      fetchProducts();
+      fetchProductsFromDB();
     }
 
     displayMessage("products", request.message);
@@ -62,7 +57,7 @@ function Admin() {
   const handleEditProduct = async (data) => {
     const request = await editProduct(selectedProduct.id, data);
     if (request.success) {
-      fetchProducts();
+      fetchProductsFromDB();
     }
 
     displayMessage("products", request.message);
@@ -75,7 +70,7 @@ function Admin() {
 
     if (request.success) {
       displayMessage("products", request.message);
-      fetchProducts();
+      fetchProductsFromDB();
     }
   };
 
@@ -121,7 +116,7 @@ function Admin() {
       {message.products}
 
       <ul>
-        {products?.map((product) => (
+        {productsInDB?.map((product) => (
           <li className="border-t p-4" key={product.id}>
             {product.name} - {product.price}€
             <div className="flex gap-4">

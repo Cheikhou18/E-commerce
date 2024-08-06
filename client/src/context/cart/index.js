@@ -19,10 +19,6 @@ function CartProvider({ children }) {
   const [viewCart, setViewCart] = useState(false);
 
   useEffect(() => {
-    async function fetchProductsFromDB() {
-      const request = await getProducts();
-      if (request.success) setProductsInDB(request.produits);
-    }
     fetchProductsFromDB();
   }, [cartProducts]);
 
@@ -30,6 +26,11 @@ function CartProvider({ children }) {
     (quantity, product) => quantity + product.quantity,
     0
   );
+
+  async function fetchProductsFromDB() {
+    const request = await getProducts();
+    if (request.success) setProductsInDB(request.produits);
+  }
 
   function getProductQuantity(id) {
     return cartProducts.find((product) => product.id === id)?.quantity || 0;
@@ -84,6 +85,7 @@ function CartProvider({ children }) {
   }
 
   const values = {
+    fetchProductsFromDB,
     productsInDB,
     cartProducts,
     cartQuantity,

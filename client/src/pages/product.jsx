@@ -22,8 +22,9 @@ function ProductDetails() {
       {/* If product, display product details else display error */}
       {product ? (
         <div className="flex flex-col gap-12">
+          <img src={product.image} alt={product.name} className="w-96" />
+
           <h2 className="text-xl font-bold">{product.name}</h2>
-          <img src={product.image} alt={product.name} />
           <p>Description : {product.description}</p>
 
           <div className="flex gap-6">
