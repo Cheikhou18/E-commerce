@@ -1,17 +1,13 @@
+import { addProduct, deleteProduct, editProduct } from "../api/products.js";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/admin";
-import {
-  addProduct,
-  deleteProduct,
-  editProduct,
-  getProducts,
-} from "../api/products.js";
-import ProductForm from "../components/productForm";
-import { getCategories } from "../api/categories.js";
-import CategoryCard from "../components/categoryCard.jsx";
-import AddCategory from "../components/createCategory.jsx";
+
+import AddCategory from "../components/category/createCategory.jsx";
+import CategoryCard from "../components/category/categoryCard.jsx";
+import ProductForm from "../components/product/productForm.jsx";
 import { useCartContext } from "../context/cart/index.js";
+import { getCategories } from "../api/categories.js";
 
 function Admin() {
   const { productsInDB, fetchProductsFromDB } = useCartContext();

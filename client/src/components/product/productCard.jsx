@@ -1,8 +1,8 @@
-import React from 'react';
-import { useCartContext } from "../context/cart";
+import React from "react";
+import { useCartContext } from "../../context/cart";
 import { Link } from "react-router-dom";
-import "../assets/css/Products.css";
-import RecommendedBadge from "./RecommendedBadge"; // Importez le composant
+import "../../assets/css/Products.css";
+import RecommendedBadge from "../RecommendedBadge"; // Importez le composant
 
 function ProductCard(props) {
   const { product } = props;
@@ -15,11 +15,17 @@ function ProductCard(props) {
         <div className="product-details">
           <h2 className="product-name">{product.name}</h2>
           <p className="product-price">Price : {product.price}</p>
+
           {product.stock < 10 && (
-            <p className="stock-warning" style={{color: 'red'}}>Attention : Moins de 10 articles en stock!</p>
+            <p className="stock-warning text-red-500">
+              Attention : Moins de 10 articles en stock!
+            </p>
           )}
+
+          {product.recommended && <RecommendedBadge />}
         </div>
-        {product.recommended && <RecommendedBadge />} {/* Affiche le badge si recommandé */}
+
+        {/* Affiche le badge si recommandé */}
       </Link>
 
       <button
