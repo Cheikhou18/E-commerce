@@ -1,7 +1,9 @@
-import { useAuth } from "../context/admin.js";
-import { Link } from "react-router-dom";
+import ProductsInPayment from "../components/payment/productsInPayment.jsx";
 import { useCartContext } from "../context/cart/index.js";
-import ProductsInPayment from "../components/productsInPayment.jsx";
+import { useAuth } from "../context/admin.js";
+
+import { Link } from "react-router-dom";
+import Total from "../components/payment/total.jsx";
 
 function Payment() {
   const { user } = useAuth();
@@ -19,10 +21,12 @@ function Payment() {
   }
 
   return (
-    <div>
+    <div className="flex gap-6">
       {cartProducts?.map((product) => {
         return <ProductsInPayment key={product.id} {...product} />;
       })}
+
+      <Total />
     </div>
   );
 }

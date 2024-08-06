@@ -1,6 +1,6 @@
-import { useCartContext } from "../context/cart";
+import { useCartContext } from "../../context/cart";
 
-function ProductsInPayment({ id, quantity }) {
+export function ProductsInCart({ id, quantity }) {
   const { productsInDB, removeFromCart } = useCartContext();
   const product = productsInDB.find((product) => product.id === id);
 
@@ -25,5 +25,3 @@ function ProductsInPayment({ id, quantity }) {
     </div>
   );
 }
-
-export default ProductsInPayment;

@@ -1,7 +1,7 @@
-import { useCartContext } from "../context/cart";
+import { useCartContext } from "../../context/cart";
 
 import { Link } from "react-router-dom";
-import "../assets/css/Products.css";
+import "../../assets/css/Products.css";
 
 function ProductCard(props) {
   const { product } = props;

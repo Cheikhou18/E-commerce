@@ -4,7 +4,7 @@ import Home from "../pages/home";
 import Admin from "../pages/admin";
 import SignUp from "../pages/signup";
 import SignIn from "../pages/signin";
-import Cart from "../components/cart";
+import Cart from "../components/cart/cart";
 import Profile from "../pages/profile";
 import Payment from "../pages/payment";
 import Navbar from "../components/navbar";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getProductsByPopularity } from "../api/products";
-import ProductCard from "../components/productCard";
+import ProductCard from "../components/product/productCard";
 import ProductUnavailable from "../components/productUnavailable";
 import "../assets/css/Products.css";
 
