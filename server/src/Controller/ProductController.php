@@ -149,27 +149,30 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/api/products/similar/{name}', name: 'get_similar_products', methods: ['GET'])]
-public function getSimilarProducts($name): JsonResponse
-{
-    $products = $this->entityManager->getRepository(Product::class)->findBy(['name' => $name]);
-
-    $productData = [];
-
-    foreach ($products as $product) {
-        $productData[] = [
-            'id' => $product->getId(),
-            'name' => $product->getName(),
-            'price' => $product->getPrice(),
-            'image' => $product->getImage(),
-            'stock' => $product->getStock(),
-        ];
+    #[Route('/api/products/similar/{name}/{currentProductId}', name: 'get_similar_products', methods: ['GET'])]
+    public function getSimilarProducts($name, $currentProductId): JsonResponse
+    {
+        $products = $this->entityManager->getRepository(Product::class)->findBy(['name' => $name]);
+    
+        $productData = [];
+    
+        foreach ($products as $product) {
+            if ($product->getId() != $currentProductId) {
+                $productData[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(),
+                    'image' => $product->getImage(),
+                    'stock' => $product->getStock(),
+                ];
+            }
+        }
+    
+        return $this->json([
+            'success' => true,
+            'response' => $productData,
+        ]);
     }
-
-    return $this->json([
-        'success' => true,
-        'response' => $productData,
-    ]);
-}
+    
 
 }
