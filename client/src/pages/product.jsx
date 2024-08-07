@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getProductById, getProductByName } from "../api/products";
+import { getProductById, getSimilarProductsByName } from "../api/products";
 import { useCartContext } from "../context/cart";
 import Navbar from "../components/navbar";
 
@@ -16,7 +16,7 @@ function ProductDetails() {
       if (request.success) {
         setProduct(request.response);
 
-        const similarRequest = await getProductByName(request.response.name);
+        const similarRequest = await getSimilarProductsByName(request.response.name, id);
         if (similarRequest.success) {
           setSimilarProducts(similarRequest.response);
         }
@@ -29,7 +29,6 @@ function ProductDetails() {
   return (
     <div className="flex flex-col h-screen justify-center items-center">
       <Navbar />
-      {/* If product, display product details else display error */}
       {product ? (
         <div className="flex flex-col gap-12">
           <h2 className="text-xl font-bold">{product.name}</h2>
@@ -54,7 +53,7 @@ function ProductDetails() {
 
           <div>
             <h3 className="text-lg font-bold">Similar Products</h3>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-row gap-4">
               {similarProducts.map((similarProduct) => (
                 <Link
                   to={`/products/${similarProduct.id}`}
@@ -62,7 +61,11 @@ function ProductDetails() {
                   className="flex flex-col items-center border p-4 rounded-lg"
                 >
                   <h4>{similarProduct.name}</h4>
-                  <img src={similarProduct.image} alt={similarProduct.name} />
+                  <img 
+                    src={similarProduct.image} 
+                    alt={similarProduct.name} 
+                    className="cursor-pointer h-28"
+                  />
                   <p>{similarProduct.price} €</p>
                 </Link>
               ))}
