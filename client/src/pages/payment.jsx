@@ -4,6 +4,7 @@ import { useAuth } from "../context/admin.js";
 
 import { Link } from "react-router-dom";
 import Total from "../components/payment/total.jsx";
+import Address from "../components/payment/address.jsx";
 
 function Payment() {
   const { user } = useAuth();
@@ -21,12 +22,18 @@ function Payment() {
   }
 
   return (
-    <div className="flex gap-6">
-      {cartProducts?.map((product) => {
-        return <ProductsInPayment key={product.id} {...product} />;
-      })}
+    <div>
+      <div className="flex gap-6">
+        {cartProducts?.map((product) => {
+          return <ProductsInPayment key={product.id} {...product} />;
+        })}
 
-      <Total />
+        <Total />
+      </div>
+
+      <div>
+        <Address />
+      </div>
     </div>
   );
 }
