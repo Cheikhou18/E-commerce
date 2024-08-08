@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getProductById, getSimilarProductsByName } from "../api/products";
+import { getProductById, getSimilarProductsByColor } from "../api/products";
 import { useCartContext } from "../context/cart";
 import Navbar from "../components/navbar";
 
@@ -16,7 +16,7 @@ function ProductDetails() {
       if (request.success) {
         setProduct(request.response);
 
-        const similarRequest = await getSimilarProductsByName(request.response.name, id);
+        const similarRequest = await getSimilarProductsByColor(request.response.color, id);
         if (similarRequest.success) {
           setSimilarProducts(similarRequest.response);
         }
@@ -53,7 +53,7 @@ function ProductDetails() {
 
           <div>
             <h3 className="text-lg font-bold">Similar Products</h3>
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-col gap-4">
               {similarProducts.map((similarProduct) => (
                 <Link
                   to={`/products/${similarProduct.id}`}
@@ -64,7 +64,7 @@ function ProductDetails() {
                   <img 
                     src={similarProduct.image} 
                     alt={similarProduct.name} 
-                    className="cursor-pointer h-28"
+                    className="cursor-pointer"
                   />
                   <p>{similarProduct.price} €</p>
                 </Link>

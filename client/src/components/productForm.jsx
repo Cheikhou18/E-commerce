@@ -8,6 +8,7 @@ const ProductForm = ({ product, onSubmit }) => {
     stock: '',
     image: '',
     id_category: '',
+    color:'',
   });
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const ProductForm = ({ product, onSubmit }) => {
         stock: product.stock || '',
         image: product.image || '',
         id_category: product.id_category || '',
+        color: product.color
       });
     }
   }, [product]);
@@ -66,6 +68,10 @@ const ProductForm = ({ product, onSubmit }) => {
       <div>
         <label>Category ID</label>
         <input name="id_category" type="number" value={formData.id_category} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Color</label>
+        <input name="color" value={formData.color} onChange={handleChange} required />
       </div>
       <button type="submit">Submit</button>
     </form>

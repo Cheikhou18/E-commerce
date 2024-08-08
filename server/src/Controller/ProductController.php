@@ -67,6 +67,7 @@ class ProductController extends AbstractController
         $product->setStock($data['stock']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
+        $product->setColor($data['color']);
         $product->setPopularity(0);
 
         $this->entityManager->persist($product);
@@ -92,6 +93,7 @@ class ProductController extends AbstractController
         $product->setStock($data['stock']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
+        $product->setColor($data['color']);
 
 
         $this->entityManager->flush();
@@ -141,6 +143,7 @@ class ProductController extends AbstractController
             'stock' => $product->getStock(),
             'category' => $product->getIdCategory(),
             'features' => $product->getIdFeatures(),
+            'color' => $product->getColor(),
         ];
 
         return $this->json([
@@ -149,10 +152,10 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/api/products/similar/{name}/{currentProductId}', name: 'get_similar_products', methods: ['GET'])]
-    public function getSimilarProducts($name, $currentProductId): JsonResponse
+    #[Route('/api/products/similar/{color}/{currentProductId}', name: 'get_similar_products', methods: ['GET'])]
+    public function getSimilarProducts($color, $currentProductId): JsonResponse
     {
-        $products = $this->entityManager->getRepository(Product::class)->findBy(['name' => $name]);
+        $products = $this->entityManager->getRepository(Product::class)->findBy(['color' => $color]);
     
         $productData = [];
     
@@ -164,6 +167,7 @@ class ProductController extends AbstractController
                     'price' => $product->getPrice(),
                     'image' => $product->getImage(),
                     'stock' => $product->getStock(),
+                    'color' => $product->getColor(),
                 ];
             }
         }
@@ -172,7 +176,8 @@ class ProductController extends AbstractController
             'success' => true,
             'response' => $productData,
         ]);
-    }
+     }
+    
     
 
 }
