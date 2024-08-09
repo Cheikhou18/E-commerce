@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { useAuth } from "../../context/admin";
 import { shippingData } from "../../api/delivery";
+import { useCartContext } from "../../context/cart";
 
 function Address() {
   const { user } = useAuth();
+  const { shippingFee, setShippingFee } = useCartContext();
   const [address, setAddress] = useState({
     address: user.address,
     city: user.city,
     zipcode: user.zipcode,
   });
 
-  const [distance, setDistance] = useState();
   const [message, setMessage] = useState();
-
-  const shippingFee = distance * 0.002 || "";
 
   function handleChangeAddress(e) {
     setAddress((address) => {
@@ -27,15 +26,22 @@ function Address() {
     const formIsComplete = Object.values(address).every(
       (value) => value !== ("" || undefined)
     );
-    if (!formIsComplete) return setMessage("Please complete the form");
+
+    if (!formIsComplete) return setMessage("Please enter your address");
 
     const request = await shippingData(address);
-    setDistance(request.response?.rows[0]?.elements[0]?.distance.value);
+
+    if (request?.response?.status === "OK") {
+      const distance = request.response?.rows[0]?.elements[0]?.distance.value;
+      setShippingFee(5 + 0.001 * distance);
+    }
   }
 
   return (
     <form className="flex flex-col gap-2" onSubmit={(e) => handleSubmit(e)}>
       <h3 className="text-lg font-medium">Shipping address</h3>
+
+      {message}
 
       <div className="flex gap-4">
         <input
