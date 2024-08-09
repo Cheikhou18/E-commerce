@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { createCategory } from "../api/auth/admin";
-import { getCategories } from "../api/categories";
+import { createCategory } from "../../api/auth/admin";
+import { getCategories } from "../../api/categories";
 
 function AddCategory({ props }) {
   const [message, setMessage] = useState();

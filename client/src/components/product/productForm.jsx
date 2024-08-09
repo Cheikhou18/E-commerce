@@ -9,6 +9,7 @@ const ProductForm = ({ product, onSubmit }) => {
     image: '',
     id_category: '',
     color:'',
+    recommended: false,
   });
 
   useEffect(() => {
@@ -20,14 +21,19 @@ const ProductForm = ({ product, onSubmit }) => {
         stock: product.stock || '',
         image: product.image || '',
         id_category: product.id_category || '',
-        color: product.color
+        color: product.color,
+        recommended: product.recommended || false,
       });
     }
   }, [product]);
 
+  
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
   };
 
   const handleSubmit = (e) => {
@@ -40,6 +46,7 @@ const ProductForm = ({ product, onSubmit }) => {
       stock: '',
       image: '',
       id_category: '',
+      recommended: false,
     });
   };
 
@@ -72,6 +79,8 @@ const ProductForm = ({ product, onSubmit }) => {
       <div>
         <label>Color</label>
         <input name="color" value={formData.color} onChange={handleChange} required />
+        <label>Recommended</label>
+        <input name="recommended" type="checkbox" checked={formData.recommended} onChange={handleChange} />
       </div>
       <button type="submit">Submit</button>
     </form>

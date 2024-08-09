@@ -17,12 +17,9 @@ function CartProvider({ children }) {
   const [cartProducts, setCartProducts] = useLocalStorage("shopping_cart", []);
   const [productsInDB, setProductsInDB] = useState([]);
   const [viewCart, setViewCart] = useState(false);
+  const [shippingFee, setShippingFee] = useState(5);
 
   useEffect(() => {
-    async function fetchProductsFromDB() {
-      const request = await getProducts();
-      if (request.success) setProductsInDB(request.produits);
-    }
     fetchProductsFromDB();
   }, [cartProducts]);
 
@@ -30,6 +27,11 @@ function CartProvider({ children }) {
     (quantity, product) => quantity + product.quantity,
     0
   );
+
+  async function fetchProductsFromDB() {
+    const request = await getProducts();
+    if (request.success) setProductsInDB(request.produits);
+  }
 
   function getProductQuantity(id) {
     return cartProducts.find((product) => product.id === id)?.quantity || 0;
@@ -84,6 +86,7 @@ function CartProvider({ children }) {
   }
 
   const values = {
+    fetchProductsFromDB,
     productsInDB,
     cartProducts,
     cartQuantity,
@@ -93,6 +96,8 @@ function CartProvider({ children }) {
     removeFromCart,
     viewCart,
     changeViewCart,
+    shippingFee,
+    setShippingFee,
   };
 
   return <CartContext.Provider value={values}>{children}</CartContext.Provider>;

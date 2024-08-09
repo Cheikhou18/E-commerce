@@ -46,6 +46,7 @@ class ProductController extends AbstractController
                 'popularity' => $product->getPopularity(),
                 'id_category' => $product->getIdCategory(),
                 'description' => $product->getDescription(),
+                'recommended' => $product->getRecommended(),
             ];
         }
 
@@ -67,8 +68,11 @@ class ProductController extends AbstractController
         $product->setStock($data['stock']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
+        $product->setRecommended($data['recommended']);
         $product->setColor($data['color']);
         $product->setPopularity(0);
+        
+        
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -93,7 +97,8 @@ class ProductController extends AbstractController
         $product->setStock($data['stock']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
-        $product->setColor($data['color']);
+        $product->setRecommended($data['recommended']);
+            $product->setColor($data['color']);
 
 
         $this->entityManager->flush();
@@ -144,6 +149,7 @@ class ProductController extends AbstractController
             'stock' => $product->getStock(),
             'category' => $product->getIdCategory(),
             'features' => $product->getIdFeatures(),
+            'description' => $product->getDescription(),
             'color' => $product->getColor(),
             'similar_products' => $similarProducts, 
         ];

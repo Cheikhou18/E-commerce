@@ -1,21 +1,16 @@
+import { addProduct, deleteProduct, editProduct } from "../api/products.js";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/admin";
-import {
-  addProduct,
-  deleteProduct,
-  editProduct,
-  getProducts,
-} from "../api/products.js";
-import { createCategory } from "../api/auth/admin.js";
-import ProductForm from "../components/productForm";
-import Navbar from "../components/navbar";
-import AddCategory from "../components/createCategory.jsx";
+
+import AddCategory from "../components/category/createCategory.jsx";
+import CategoryCard from "../components/category/categoryCard.jsx";
+import ProductForm from "../components/product/productForm.jsx";
+import { useCartContext } from "../context/cart/index.js";
 import { getCategories } from "../api/categories.js";
-import CategoryCard from "../components/categoryCard.jsx";
 
 function Admin() {
-  const [products, setProducts] = useState();
+  const { productsInDB, fetchProductsFromDB } = useCartContext();
   const [categories, setCategories] = useState();
 
   const [isFormVisible, setFormVisible] = useState(false);
@@ -28,14 +23,8 @@ function Admin() {
 
   useEffect(() => {
     if (isAdmin === false) return navigate("/");
-    fetchProducts();
     fetchCategories();
   }, [isAdmin]);
-
-  async function fetchProducts() {
-    const request = await getProducts();
-    if (request.success) setProducts(request.produits);
-  }
 
   async function fetchCategories() {
     const request = await getCategories();
@@ -54,7 +43,7 @@ function Admin() {
   const handleAddProduct = async (data) => {
     const request = await addProduct(data);
     if (request.success) {
-      fetchProducts();
+      fetchProductsFromDB();
     }
 
     displayMessage("products", request.message);
@@ -64,7 +53,7 @@ function Admin() {
   const handleEditProduct = async (data) => {
     const request = await editProduct(selectedProduct.id, data);
     if (request.success) {
-      fetchProducts();
+      fetchProductsFromDB();
     }
 
     displayMessage("products", request.message);
@@ -77,7 +66,7 @@ function Admin() {
 
     if (request.success) {
       displayMessage("products", request.message);
-      fetchProducts();
+      fetchProductsFromDB();
     }
   };
 
@@ -93,8 +82,6 @@ function Admin() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Navbar />
-
       <div className="flex flex-col">
         <h3 className="text-xl font-bold p-10">Categories</h3>
 
@@ -125,7 +112,7 @@ function Admin() {
       {message.products}
 
       <ul>
-        {products?.map((product) => (
+        {productsInDB?.map((product) => (
           <li className="border-t p-4" key={product.id}>
             {product.name} - {product.price}€
             <div className="flex gap-4">
