@@ -123,18 +123,19 @@ class ProductController extends AbstractController
     {
         $id = $request->get('id');
         $product = $entityManager->getRepository(Product::class)->find($id);
-
+    
         if (!$product) {
             return $this->json(['success' => false, 'message' => 'Product does not exist']);
         }
-
-        // Increase popularity of the product
-
+    
+        // Augmenter la popularité du produit
         $popularity = $product->getPopularity() + 1;
         $product->setPopularity($popularity);
-
         $entityManager->flush();
-
+    
+        $similarProducts = $this->getSimilarProductsByName($product->getName(), $product->getId())->getContent();
+        $similarProducts = json_decode($similarProducts, true)['response'];
+    
         $response = [
             'id' => $product->getId(),
             'name' => $product->getName(),
@@ -144,18 +145,19 @@ class ProductController extends AbstractController
             'category' => $product->getIdCategory(),
             'features' => $product->getIdFeatures(),
             'color' => $product->getColor(),
+            'similar_products' => $similarProducts, 
         ];
-
+    
         return $this->json([
             'success' => true,
             'response' => $response,
         ]);
     }
 
-    #[Route('/api/products/similar/{color}/{currentProductId}', name: 'get_similar_products', methods: ['GET'])]
-    public function getSimilarProducts($color, $currentProductId): JsonResponse
+    #[Route('/api/products/similar-by-name/{name}/{currentProductId}', name: 'get_similar_products_by_name', methods: ['GET'])]
+    public function getSimilarProductsByName($name, $currentProductId): JsonResponse
     {
-        $products = $this->entityManager->getRepository(Product::class)->findBy(['color' => $color]);
+        $products = $this->entityManager->getRepository(Product::class)->findBy(['name' => $name]);
     
         $productData = [];
     
@@ -176,8 +178,11 @@ class ProductController extends AbstractController
             'success' => true,
             'response' => $productData,
         ]);
-     }
-    
+    }
     
 
 }
+
+
+
+
