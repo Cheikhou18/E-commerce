@@ -22,13 +22,19 @@ function Payment() {
   }
 
   return (
-    <div>
-      <div className="flex gap-6">
-        {cartProducts?.map((product) => {
-          return <ProductsInPayment key={product.id} {...product} />;
-        })}
+    <div className="p-10">
+      <div className="flex justify-between">
+        <div className="flex flex-col gap-2">
+          <h3 className="font-medium text-xl">Cart</h3>
 
-        <Total />
+          {cartProducts?.map((product) => {
+            return <ProductsInPayment key={product.id} {...product} />;
+          })}
+        </div>
+
+        <div>
+          <Total />
+        </div>
       </div>
 
       <div>

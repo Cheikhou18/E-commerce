@@ -1,20 +1,24 @@
 import { useCartContext } from "../../context/cart";
 
 function Total() {
-  const { productsInDB, cartProducts } = useCartContext();
+  const { cartTotalPrice, shippingFee } = useCartContext();
 
   return (
-    <div>
-      <p>
-        Total:{" "}
-        {cartProducts.reduce((total, cartProduct) => {
-          const product = productsInDB.find((i) => i.id === cartProduct.id);
-          return total + (product?.price || 0) * cartProduct.quantity;
-        }, 0)}
-        €
-      </p>
+    <div className="flex flex-col gap-2 px-4 py-2 border rounded-md w-48">
+      <div className="flex justify-between text-lg font-medium">
+        <p>Total</p>
+        <p>{parseInt(cartTotalPrice) + parseInt(shippingFee)}€</p>
+      </div>
 
-      <button>Proceed to payment</button>
+      <div className="flex justify-between text-sm">
+        <p>Products</p>
+        <p>{cartTotalPrice}€</p>
+      </div>
+
+      <div className="flex justify-between text-sm">
+        <p>Shipping</p>
+        <p>{shippingFee}€</p>
+      </div>
     </div>
   );
 }

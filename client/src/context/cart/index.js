@@ -28,6 +28,11 @@ function CartProvider({ children }) {
     0
   );
 
+  const cartTotalPrice = cartProducts.reduce((total, cartProduct) => {
+    const product = productsInDB.find((i) => i.id === cartProduct.id);
+    return total + (product?.price || 0) * cartProduct.quantity;
+  }, 0);
+
   async function fetchProductsFromDB() {
     const request = await getProducts();
     if (request.success) setProductsInDB(request.produits);
@@ -90,6 +95,7 @@ function CartProvider({ children }) {
     productsInDB,
     cartProducts,
     cartQuantity,
+    cartTotalPrice,
     getProductQuantity,
     increaseProductQuantity,
     decreaseProductQuantity,

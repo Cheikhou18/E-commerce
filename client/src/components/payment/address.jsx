@@ -5,7 +5,7 @@ import { useCartContext } from "../../context/cart";
 
 function Address() {
   const { user } = useAuth();
-  const { shippingFee, setShippingFee } = useCartContext();
+  const { setShippingFee } = useCartContext();
   const [address, setAddress] = useState({
     address: user.address,
     city: user.city,
@@ -29,12 +29,16 @@ function Address() {
 
     if (!formIsComplete) return setMessage("Please enter your address");
 
-    const request = await shippingData(address);
+    const requestShippingFee = await shippingData(address);
 
-    if (request?.response?.status === "OK") {
-      const distance = request.response?.rows[0]?.elements[0]?.distance.value;
-      setShippingFee(5 + 0.001 * distance);
+    if (requestShippingFee?.response?.status === "OK") {
+      const distance =
+        requestShippingFee.response?.rows[0]?.elements[0]?.distance.value;
+
+      setShippingFee((5 + 0.001 * distance).toFixed(0));
     }
+
+    // const saveAddressToDB = await addAddress();
   }
 
   return (
@@ -87,8 +91,6 @@ function Address() {
           className="border p-2"
         />
       </div>
-
-      {shippingFee}
 
       <button className="border px-4 py-2">Submit</button>
     </form>
