@@ -69,6 +69,7 @@ class ProductController extends AbstractController
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
+        $product->setColor($data['color']);
         $product->setPopularity(0);
         
         
@@ -97,7 +98,8 @@ class ProductController extends AbstractController
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
-    
+            $product->setColor($data['color']);
+
 
         $this->entityManager->flush();
 
@@ -126,18 +128,19 @@ class ProductController extends AbstractController
     {
         $id = $request->get('id');
         $product = $entityManager->getRepository(Product::class)->find($id);
-
+    
         if (!$product) {
             return $this->json(['success' => false, 'message' => 'Product does not exist']);
         }
-
-        // Increase popularity of the product
-
+    
+        // Augmenter la popularité du produit
         $popularity = $product->getPopularity() + 1;
         $product->setPopularity($popularity);
-
         $entityManager->flush();
-
+    
+        $similarProducts = $this->getSimilarProductsByName($product->getName(), $product->getId())->getContent();
+        $similarProducts = json_decode($similarProducts, true)['response'];
+    
         $response = [
             'id' => $product->getId(),
             'name' => $product->getName(),
@@ -147,11 +150,45 @@ class ProductController extends AbstractController
             'category' => $product->getIdCategory(),
             'features' => $product->getIdFeatures(),
             'description' => $product->getDescription(),
+            'color' => $product->getColor(),
+            'similar_products' => $similarProducts, 
         ];
-
+    
         return $this->json([
             'success' => true,
             'response' => $response,
         ]);
     }
+
+    #[Route('/api/products/similar-by-name/{name}/{currentProductId}', name: 'get_similar_products_by_name', methods: ['GET'])]
+    public function getSimilarProductsByName($name, $currentProductId): JsonResponse
+    {
+        $products = $this->entityManager->getRepository(Product::class)->findBy(['name' => $name]);
+    
+        $productData = [];
+    
+        foreach ($products as $product) {
+            if ($product->getId() != $currentProductId) {
+                $productData[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(),
+                    'image' => $product->getImage(),
+                    'stock' => $product->getStock(),
+                    'color' => $product->getColor(),
+                ];
+            }
+        }
+    
+        return $this->json([
+            'success' => true,
+            'response' => $productData,
+        ]);
+    }
+    
+
 }
+
+
+
+

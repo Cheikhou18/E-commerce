@@ -42,6 +42,9 @@ class Product
     private bool $recommended = false;
 
 
+    #[ORM\Column(length: 255)]
+    private ?string $color = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -151,6 +154,18 @@ class Product
     public function setRecommended(bool $recommended): static
     {
         $this->recommended = $recommended;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): static
+    {
+        $this->color = $color;
 
         return $this;
     }
