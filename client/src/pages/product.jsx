@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getProductById, getSimilarProductsByName } from "../api/products";
 import { useCartContext } from "../context/cart";
+import Navbar from "../components/navbar";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -29,8 +30,6 @@ function ProductDetails() {
     <div className="flex flex-col h-screen justify-center items-center">
       {product ? (
         <div className="flex flex-col gap-12">
-          <img src={product.image} alt={product.name} className="w-96" />
-
           <h2 className="text-xl font-bold">{product.name}</h2>
           <img src={product.image} alt={product.name} className="max-h-96" />
           <p>Description : {product.description}</p>

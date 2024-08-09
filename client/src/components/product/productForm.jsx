@@ -8,7 +8,6 @@ const ProductForm = ({ product, onSubmit }) => {
     stock: '',
     image: '',
     id_category: '',
-    color:'',
     recommended: false,
   });
 
@@ -21,7 +20,6 @@ const ProductForm = ({ product, onSubmit }) => {
         stock: product.stock || '',
         image: product.image || '',
         id_category: product.id_category || '',
-        color: product.color,
         recommended: product.recommended || false,
       });
     }
@@ -77,8 +75,6 @@ const ProductForm = ({ product, onSubmit }) => {
         <input name="id_category" type="number" value={formData.id_category} onChange={handleChange} required />
       </div>
       <div>
-        <label>Color</label>
-        <input name="color" value={formData.color} onChange={handleChange} required />
         <label>Recommended</label>
         <input name="recommended" type="checkbox" checked={formData.recommended} onChange={handleChange} />
       </div>
