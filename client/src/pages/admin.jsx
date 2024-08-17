@@ -11,6 +11,7 @@ import ProductForm from "../components/productForm";
 import { getCategories } from "../api/categories.js";
 import CategoryCard from "../components/categoryCard.jsx";
 import AddCategory from "../components/createCategory.jsx";
+import DeliveryCostManager from "../components/DeliveryCostManager"; // Importer le composant
 
 function Admin() {
   const [products, setProducts] = useState();
@@ -137,6 +138,8 @@ function Admin() {
           <button onClick={openFormToAdd}>+ Add a product</button>
         </li>
       </ul>
+
+      <DeliveryCostManager /> {/* Ajouter le gestionnaire de frais de livraison */}
     </div>
   );
 }
