@@ -16,7 +16,10 @@ function ProductDetails() {
       if (request.success) {
         setProduct(request.response);
 
-        const similarRequest = await getSimilarProductsByName(request.response.name, id);
+        const similarRequest = await getSimilarProductsByName(
+          request.response.name,
+          id
+        );
         if (similarRequest.success) {
           setSimilarProducts(similarRequest.response);
         }
@@ -27,17 +30,18 @@ function ProductDetails() {
   }, [id]);
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center">
+    <div className="mt-20 flex flex-col h-screen justify-center items-center">
       {product ? (
         <div className="flex flex-col gap-12">
-          <h2 className="text-xl font-bold">{product.name}</h2>
           <img src={product.image} alt={product.name} className="max-h-96" />
+          <h2 className="text-xl font-bold">{product.name}</h2>
           <p>Description : {product.description}</p>
 
           <div className="flex gap-6">
             <div>
               <p>{product.price} €</p>
             </div>
+
             <div>
               <p>In stock: {product.stock}</p>
             </div>
@@ -59,10 +63,12 @@ function ProductDetails() {
                   key={similarProduct.id}
                   className="flex flex-col items-center border p-4 rounded-lg "
                 >
-                  <h4>{similarProduct.name} ({similarProduct.color})</h4>
-                  <img 
-                    src={similarProduct.image} 
-                    alt={similarProduct.name} 
+                  <h4>
+                    {similarProduct.name} ({similarProduct.color})
+                  </h4>
+                  <img
+                    src={similarProduct.image}
+                    alt={similarProduct.name}
                     className="cursor-pointer h-20"
                   />
                   <p>{similarProduct.price} €</p>

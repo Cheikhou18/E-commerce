@@ -14,13 +14,14 @@ export async function getProductById(id) {
 export async function getProductByName(name) {
   return await get("/api/products/" + name);
 }
+
 export async function getSimilarProductsByColor(color, currentProductId) {
   return await get(`/api/products/similar/${color}/${currentProductId}`);
 }
+
 export async function getSimilarProductsByName(name, currentProductId) {
   return await get(`/api/products/similar-by-name/${name}/${currentProductId}`);
 }
-
 
 export async function addProduct(data) {
   return await post("/api/products", data);

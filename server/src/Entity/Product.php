@@ -41,7 +41,6 @@ class Product
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $recommended = false;
 
-
     #[ORM\Column(length: 255)]
     private ?string $color = null;
 

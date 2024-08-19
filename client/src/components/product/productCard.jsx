@@ -12,13 +12,14 @@ function ProductCard(props) {
     <div className="relative flex flex-col">
       <Link to={"/products/" + product.id}>
         <img src={product.image} alt={product.name} className="product-image" />
+
         <div className="product-details">
           <h2 className="product-name">{product.name}</h2>
           <p className="product-price">Price : {product.price}</p>
 
           {product.stock < 10 && (
             <p className="stock-warning text-red-500">
-              Attention : Moins de 10 articles en stock!
+              Warning: only {product.quantity} left in stock!
             </p>
           )}
 
