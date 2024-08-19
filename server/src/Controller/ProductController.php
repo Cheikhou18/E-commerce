@@ -66,13 +66,11 @@ class ProductController extends AbstractController
         $product->setPrice($data['price']);
         $product->setImage($data['image']);
         $product->setStock($data['stock']);
+        $product->setColor($data['color']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
-        $product->setColor($data['color']);
         $product->setPopularity(0);
-        
-        
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -95,11 +93,10 @@ class ProductController extends AbstractController
         $product->setPrice($data['price']);
         $product->setImage($data['image']);
         $product->setStock($data['stock']);
+        $product->setColor($data['color']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
-            $product->setColor($data['color']);
-
 
         $this->entityManager->flush();
 
@@ -128,32 +125,32 @@ class ProductController extends AbstractController
     {
         $id = $request->get('id');
         $product = $entityManager->getRepository(Product::class)->find($id);
-    
+
         if (!$product) {
             return $this->json(['success' => false, 'message' => 'Product does not exist']);
         }
-    
+
         // Augmenter la popularité du produit
         $popularity = $product->getPopularity() + 1;
         $product->setPopularity($popularity);
         $entityManager->flush();
-    
+
         $similarProducts = $this->getSimilarProductsByName($product->getName(), $product->getId())->getContent();
         $similarProducts = json_decode($similarProducts, true)['response'];
-    
+
         $response = [
             'id' => $product->getId(),
             'name' => $product->getName(),
             'image' => $product->getImage(),
             'price' => $product->getPrice(),
             'stock' => $product->getStock(),
+            'color' => $product->getColor(),
             'category' => $product->getIdCategory(),
             'features' => $product->getIdFeatures(),
             'description' => $product->getDescription(),
-            'color' => $product->getColor(),
-            'similar_products' => $similarProducts, 
+            'similar_products' => $similarProducts,
         ];
-    
+
         return $this->json([
             'success' => true,
             'response' => $response,
@@ -164,9 +161,9 @@ class ProductController extends AbstractController
     public function getSimilarProductsByName($name, $currentProductId): JsonResponse
     {
         $products = $this->entityManager->getRepository(Product::class)->findBy(['name' => $name]);
-    
+
         $productData = [];
-    
+
         foreach ($products as $product) {
             if ($product->getId() != $currentProductId) {
                 $productData[] = [
@@ -179,16 +176,10 @@ class ProductController extends AbstractController
                 ];
             }
         }
-    
+
         return $this->json([
             'success' => true,
             'response' => $productData,
         ]);
     }
-    
-
 }
-
-
-
-

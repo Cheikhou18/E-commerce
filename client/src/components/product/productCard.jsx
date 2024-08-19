@@ -19,7 +19,7 @@ function ProductCard(props) {
 
           {product.stock < 10 && (
             <p className="stock-warning text-red-500">
-              Warning: only {product.quantity} left in stock!
+              Warning: only {product.stock} left in stock!
             </p>
           )}
 

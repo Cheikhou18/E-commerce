@@ -94,7 +94,7 @@ function Admin() {
             </li>
           ))}
 
-          <li className="flex justify-center border-b pb-8">
+          <li className="flex justify-center border-y py-8">
             <AddCategory props={{ setCategories }} />
           </li>
         </ul>

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getProductById, getSimilarProductsByName } from "../api/products";
 import { useCartContext } from "../context/cart";
-import Navbar from "../components/navbar";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -13,16 +12,14 @@ function ProductDetails() {
   useEffect(() => {
     async function fetchDetails() {
       const request = await getProductById(id);
-      if (request.success) {
-        setProduct(request.response);
 
-        const similarRequest = await getSimilarProductsByName(
-          request.response.name,
-          id
-        );
-        if (similarRequest.success) {
-          setSimilarProducts(similarRequest.response);
-        }
+      if (request.success) {
+        const product = request.response;
+        setProduct(product);
+
+        // Get similar products
+        const similarRequest = await getSimilarProductsByName(product.name, id);
+        if (similarRequest.success) setSimilarProducts(similarRequest.response);
       }
     }
 
