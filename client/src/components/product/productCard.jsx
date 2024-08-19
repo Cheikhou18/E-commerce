@@ -15,8 +15,14 @@ function ProductCard(props) {
 
         <div className="product-details">
           <h2 className="product-name">{product.name}</h2>
-          <p className="product-price">Price : {product.price}</p>
-
+          <p className="product-price">
+            Price :{" "}
+            {product.discount > 0
+              ? (product.price * (1 - product.discount / 100))
+              : product.price}
+            €
+          </p>
+          {product.discount > 0 && <p>{product.discount}% off!</p>}
           {product.stock < 10 && (
             <p className="stock-warning text-red-500">
               Warning: only {product.stock} left in stock!
@@ -25,8 +31,6 @@ function ProductCard(props) {
 
           {product.recommended && <RecommendedBadge />}
         </div>
-
-        {/* Affiche le badge si recommandé */}
       </Link>
 
       <button
