@@ -21,7 +21,7 @@ function Cart() {
 
       <Link
         className="flex justify-center w-80 p-6 absolute bottom-0 right-0 bg-green-400"
-        to="/cart"
+        to="/verification"
       >
         Proceed to payment
       </Link>

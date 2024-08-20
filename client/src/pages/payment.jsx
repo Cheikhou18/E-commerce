@@ -10,17 +10,6 @@ function Payment() {
   const { user } = useAuth();
   const { cartProducts } = useCartContext();
 
-  if (!user) {
-    return (
-      <form>
-        <h3>Before proceeding to cart</h3>
-
-        <button>Login</button>
-        <Link>Continue without an account</Link>
-      </form>
-    );
-  }
-
   return (
     <div className="p-10">
       <div className="flex justify-between">
