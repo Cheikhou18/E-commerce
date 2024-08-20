@@ -52,15 +52,11 @@ function Address() {
     }
 
     // Update name and/or address
-    const updateUser = await updateAccount(user?.id, {
+    await updateAccount(user?.id, {
       ...user,
       ...address,
       ...name,
     });
-
-    console.log({ ...user, ...address, ...name });
-
-    console.log(updateUser);
   }
 
   return (
