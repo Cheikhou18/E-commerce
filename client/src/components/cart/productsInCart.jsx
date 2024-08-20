@@ -21,7 +21,7 @@ export function ProductsInCart({ id, quantity }) {
         </button>
       </div>
 
-      <span className="p-1">{product.price * quantity}€</span>
+      <span className="p-1">{(product.price * quantity * (1 - (product?.discount / 100 || 0))).toFixed(2)}€</span>
     </div>
   );
 }

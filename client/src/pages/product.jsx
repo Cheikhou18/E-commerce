@@ -36,7 +36,13 @@ function ProductDetails() {
 
           <div className="flex gap-6">
             <div>
-              <p>{product.price} €</p>
+            <p className="">
+            Price :{" "}
+            {product.discount > 0
+              ? (product.price * (1 - product.discount / 100))
+              : product.price}
+            €
+          </p>
             </div>
 
             <div>
