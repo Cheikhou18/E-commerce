@@ -58,6 +58,9 @@ class UserController extends AbstractController
         $user->setFirstname($data->firstname);
         $user->setLastname($data->lastname);
         $user->setEmail($data->email);
+        $user->setAddress($data->address);
+        $user->setZipcode($data->zipcode);
+        $user->setCity($data->city);
 
         $this->em->flush();
 
