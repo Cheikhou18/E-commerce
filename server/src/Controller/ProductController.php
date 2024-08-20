@@ -158,22 +158,18 @@ class ProductController extends AbstractController
     #[Route('/api/delivery', name: 'calculate_delivery', methods: ['POST'])]
     public function calculateDelivery(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $distance = $data['distance'] ?? 0;
+    $data = json_decode($request->getContent(), true);
+    $distance = $data['distance'] ?? 0;
 
-        // Définir les frais de port en fonction de la distance
-        if ($distance < 10) {
-            $deliveryCost = 5;
-        } elseif ($distance >= 10 && $distance <= 50) {
-            $deliveryCost = 10;
-        } else {
-            $deliveryCost = 20;
-        }
+    
+    $pricePerKm = 0.75; 
+    $deliveryCost = $pricePerKm * $distance;
 
-        return new JsonResponse([
-            'success' => true,
-            'shippingCost' => $deliveryCost,
-        ]);
-    }
+    return new JsonResponse([
+        'success' => true,
+        'shippingCost' => $deliveryCost,
+    ]);
+}
+
 
 }

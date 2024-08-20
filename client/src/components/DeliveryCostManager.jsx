@@ -7,13 +7,12 @@ function DeliveryCostManager() {
   const handleCalculate = async () => {
     try {
       const response = await fetch('http://localhost:8000/api/delivery', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ distance: parseFloat(distance) }),
-});
-
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ distance: parseFloat(distance) }),
+      });
 
       const data = await response.json();
       if (data.success) {
@@ -33,11 +32,14 @@ function DeliveryCostManager() {
         type="number"
         value={distance}
         onChange={(e) => setDistance(e.target.value)}
-        placeholder="Enter distance"
+        placeholder="Enter distance in km"
+        className="border p-2"
       />
-      <button onClick={handleCalculate}>Calculate</button>
+      <button onClick={handleCalculate} className="ml-2 p-2 bg-blue-500 text-white">
+        Calculate
+      </button>
       {deliveryCost !== null && (
-        <p>Delivery Cost: {deliveryCost}€</p>
+        <p className="mt-4">Delivery Cost: {deliveryCost}€</p>
       )}
     </div>
   );
