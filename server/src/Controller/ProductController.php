@@ -71,6 +71,7 @@ class ProductController extends AbstractController
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
         $product->setPopularity(0);
+        $product->setDiscount($data['discount']);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -97,6 +98,7 @@ class ProductController extends AbstractController
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
+        $product->setDiscount($data['discount']);
 
         $this->entityManager->flush();
 
@@ -149,6 +151,7 @@ class ProductController extends AbstractController
             'features' => $product->getIdFeatures(),
             'description' => $product->getDescription(),
             'similar_products' => $similarProducts,
+            'discount' => $product->getDiscount(),
         ];
 
         return $this->json([

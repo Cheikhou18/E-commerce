@@ -23,6 +23,7 @@ const ProductForm = ({ product, onSubmit }) => {
         id_category: product.id_category || "",
         recommended: product.recommended || false,
         color: product.color || null,
+        discount: product.discount || "",
       });
     }
   }, [product]);
@@ -47,6 +48,7 @@ const ProductForm = ({ product, onSubmit }) => {
       id_category: "",
       recommended: false,
       color: null,
+      discount:"",
     });
   };
 
@@ -120,6 +122,16 @@ const ProductForm = ({ product, onSubmit }) => {
           type="text"
           name="color"
           value={formData.color}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
+        <label>Discount</label>
+        <input
+          name="discount"
+          type="number"
+          value={formData.discount}
           onChange={handleChange}
         />
       </div>

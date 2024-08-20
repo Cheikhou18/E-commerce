@@ -44,6 +44,9 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $color = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $discount = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -165,6 +168,18 @@ class Product
     public function setColor(string $color): static
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?int
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?int $discount): static
+    {
+        $this->discount = $discount;
 
         return $this;
     }
