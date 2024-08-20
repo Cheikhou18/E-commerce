@@ -18,8 +18,8 @@ function ProductCard(props) {
           <p className="product-price">
             Price :{" "}
             {product.discount > 0
-              ? (product.price * (1 - product.discount / 100))
-              : product.price}
+              ? (product.price * (1 - product.discount / 100)).toFixed(2)
+              : (product.price) .toFixed(2)}
             €
           </p>
           {product.discount > 0 && <p>{product.discount}% off!</p>}
