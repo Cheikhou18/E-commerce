@@ -7,9 +7,9 @@ function Address() {
   const { user } = useAuth();
   const { setShippingFee } = useCartContext();
   const [address, setAddress] = useState({
-    address: user.address,
-    city: user.city,
-    zipcode: user.zipcode,
+    address: user?.address,
+    city: user?.city,
+    zipcode: user?.zipcode,
   });
 
   const [message, setMessage] = useState();
@@ -50,14 +50,14 @@ function Address() {
       <div className="flex gap-4">
         <input
           type="text"
-          defaultValue={user.lastname}
+          defaultValue={user?.lastname}
           placeholder="Last Name"
           className="border p-2"
         />
 
         <input
           type="text"
-          defaultValue={user.firstname}
+          defaultValue={user?.firstname}
           placeholder="First Name"
           className="border p-2"
         />
@@ -66,7 +66,7 @@ function Address() {
       <div className="flex gap-4">
         <input
           type="text"
-          defaultValue={user.address}
+          defaultValue={user?.address}
           onChange={(e) => handleChangeAddress(e)}
           name="address"
           placeholder="Address"
@@ -75,7 +75,7 @@ function Address() {
 
         <input
           type="text"
-          defaultValue={user.city}
+          defaultValue={user?.city}
           onChange={(e) => handleChangeAddress(e)}
           name="city"
           placeholder="City"
@@ -84,7 +84,7 @@ function Address() {
 
         <input
           type="text"
-          defaultValue={user.zipcode}
+          defaultValue={user?.zipcode}
           onChange={(e) => handleChangeAddress(e)}
           name="zipcode"
           placeholder="Zipcode"

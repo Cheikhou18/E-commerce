@@ -7,7 +7,7 @@ function BeforePayment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.id) navigate("/cart");
+    if (user?.id) navigate("/cart");
   }, [user]);
 
   return (

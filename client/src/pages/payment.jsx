@@ -2,9 +2,10 @@ import ProductsInPayment from "../components/payment/productsInPayment.jsx";
 import { useCartContext } from "../context/cart/index.js";
 import { useAuth } from "../context/admin.js";
 
-import { Link } from "react-router-dom";
+import { useHistory, useNavigate } from "react-router-dom";
 import Total from "../components/payment/total.jsx";
 import Address from "../components/payment/address.jsx";
+import { useEffect } from "react";
 
 function Payment() {
   const { user } = useAuth();
