@@ -45,13 +45,11 @@ function Address() {
     if (!formIsComplete) return setMessage("Please enter your address");
 
     const requestDistanceCalculation = await shippingData(address);
+    const result = requestDistanceCalculation?.response?.rows[0]?.elements[0];
     // const getDeliveryPriceByKm = await getDeliveryPriceByKm();
 
-    if (requestDistanceCalculation?.response?.status === "OK") {
-      const distance =
-        requestDistanceCalculation?.response?.rows[0]?.elements[0]?.distance
-          ?.value;
-
+    if (result?.status === "OK") {
+      const distance = result?.distance?.value;
       setShippingFee((5 + 0.001 * distance).toFixed(0));
     }
 

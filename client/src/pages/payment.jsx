@@ -22,7 +22,6 @@ function Payment() {
       </div>
 
       <Address />
-
       <CardInfo />
 
       <button className="border rounded-md px-12 py-2 w-fit">Pay</button>
