@@ -11,7 +11,7 @@ import ProductForm from "../components/product/productForm.jsx";
 import { getCategories } from "../api/categories.js";
 import CategoryCard from "../components/category/categoryCard.jsx";
 import AddCategory from "../components/category/createCategory.jsx";
-import DeliveryCostManager from "../components/DeliveryCostManager"; // Importer le composant
+import DeliveryCostManager from "../components/DeliveryCostManager"; 
 
 function Admin() {
   const [products, setProducts] = useState();
