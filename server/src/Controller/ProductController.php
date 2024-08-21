@@ -160,6 +160,22 @@ class ProductController extends AbstractController
         ]);
     }
 
+
+    #[Route('/api/delivery', name: 'calculate_delivery', methods: ['POST'])]
+    public function calculateDelivery(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $distance = $data['distance'] ?? 0;
+        $pricePerKm = $data['pricePerKm'] ?? 0.75; 
+        $deliveryCost = $pricePerKm * $distance;
+
+        return new JsonResponse([
+            'success' => true,
+            'shippingCost' => $deliveryCost,
+        ]);
+    }
+
+
     #[Route('/api/products/similar-by-name/{name}/{currentProductId}', name: 'get_similar_products_by_name', methods: ['GET'])]
     public function getSimilarProductsByName($name, $currentProductId): JsonResponse
     {
@@ -185,4 +201,5 @@ class ProductController extends AbstractController
             'response' => $productData,
         ]);
     }
+
 }
