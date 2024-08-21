@@ -35,37 +35,43 @@ function SignUp() {
   }
 
   return (
-    <div>
-      <form onSubmit={(e) => handleSignUp(e)}>
-        <h3>Sign Up</h3>
+    <div className="flex items-center justify-center h-[90vh]">
+      <form className="flex flex-col gap-6" onSubmit={(e) => handleSignUp(e)}>
+        <h3 className="text-xl">Sign Up</h3>
 
-        <div>
+        <div className="flex flex-col">
           <label>E-mail</label>
           <input
             type="text"
+            placeholder="example@email.com"
+            className="border px-4 py-2"
             onChange={(e) => setUser({ ...user, email: e.target.value })}
           />
         </div>
 
-        <div>
+        <div className="flex flex-col">
           <label>Password</label>
           <input
             type="password"
+            placeholder="********"
+            className="border px-4 py-2"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
           />
         </div>
 
-        <div>
-          <label>Confirm</label>
+        <div className="flex flex-col">
+          <label>Confirm password</label>
           <input
             type="password"
+            placeholder="********"
+            className="border px-4 py-2"
             onChange={(e) => setUser({ ...user, confirm: e.target.value })}
           />
         </div>
 
         {message}
 
-        <button>Submit</button>
+        <button className="border px-8 py-2">Submit</button>
       </form>
     </div>
   );

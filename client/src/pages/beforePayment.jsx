@@ -7,7 +7,7 @@ function BeforePayment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.id) navigate("/cart");
+    if (user != {}) navigate("/cart");
   }, [user]);
 
   return (
@@ -18,7 +18,7 @@ function BeforePayment() {
         Connect to your account
       </Link>
       <Link className="underline" to="/cart">
-        Continue without as a Guest
+        Continue as a Guest
       </Link>
     </div>
   );
