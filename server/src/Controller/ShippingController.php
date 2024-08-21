@@ -31,4 +31,13 @@ class ShippingController extends AbstractController
             'response' => json_decode($response, true)
         ]);
     }
+
+    #[Route('/api/delivery', name: 'calculate_delivery', methods: ['POST'])]
+    public function calculateDelivery(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), false);
+        $distance = $data->pricePerKm;
+
+        return $this->json(['success' => true]);
+    }
 }

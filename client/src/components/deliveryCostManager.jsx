@@ -5,11 +5,9 @@ function DeliveryCostManager() {
   const [message, setMessage] = useState();
   const [pricePerKm, setPricePerKm] = useState(1); // Par défaut à 1€/km
 
-  async function setNewPrice(e) {
-    e.preventDefault();
-
+  async function setNewPrice() {
     const request = await updatePricePerKm(pricePerKm);
-    setMessage(request.response);
+    if (request.success) setMessage("Price updated successfully.");
   }
 
   const handlePriceChange = (e) => {
@@ -17,10 +15,8 @@ function DeliveryCostManager() {
   };
 
   return (
-    <form onSubmit={(e) => setNewPrice(e)}>
+    <div>
       <h3 className="text-xl font-bold p-10">Delivery Cost</h3>
-
-      {message}
 
       <input
         type="float"
@@ -28,9 +24,7 @@ function DeliveryCostManager() {
         onChange={handlePriceChange}
         placeholder="Price per kilometer"
       />
-
-      <button>Submit</button>
-    </form>
+    </div>
   );
 }
 

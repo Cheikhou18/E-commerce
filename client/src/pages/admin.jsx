@@ -11,7 +11,7 @@ import ProductForm from "../components/product/productForm.jsx";
 import { getCategories } from "../api/categories.js";
 import CategoryCard from "../components/category/categoryCard.jsx";
 import AddCategory from "../components/category/createCategory.jsx";
-import DeliveryCostManager from "../components/DeliveryCostManager"; 
+import DeliveryCostManager from "../components/deliveryCostManager.jsx";
 
 function Admin() {
   const [products, setProducts] = useState();
@@ -109,18 +109,14 @@ function Admin() {
           </li>
         </ul>
       </div>
-
       <h3 className="text-xl font-bold p-10">Products</h3>
-
       {isFormVisible && (
         <ProductForm
           product={selectedProduct}
           onSubmit={selectedProduct ? handleEditProduct : handleAddProduct}
         />
       )}
-
       {message.products}
-
       <ul>
         {products?.map((product) => (
           <li className="border-t p-4" key={product.id}>
@@ -138,8 +134,8 @@ function Admin() {
           <button onClick={openFormToAdd}>+ Add a product</button>
         </li>
       </ul>
-
-      <DeliveryCostManager /> {/* Ajouter le gestionnaire de frais de livraison */}
+      <DeliveryCostManager />{" "}
+      {/* Ajouter le gestionnaire de frais de livraison */}
     </div>
   );
 }
