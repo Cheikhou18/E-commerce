@@ -23,18 +23,19 @@ class UserController extends AbstractController
     public function userInfo($id): JsonResponse
     {
         $user = $this->em->getRepository(User::class)->find($id);
-
-        if (!$user) {
-            return new JsonResponse(['success' => false, 'message' => 'User not found'], 404);
-        }
+        if (!$user) return new JsonResponse(['success' => false, 'message' => 'User not found'], 404);
 
         $response = [
             'id' => $user->getId(),
+            'tel' => $user->getTel(),
+            'city' => $user->getCity(),
+            'address' => $user->getAddress(),
+            'zipcode' => $user->getZipcode(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
             'firstname' => $user->getFirstname(),
             'lastname' => $user->getLastname(),
-            'password' => $user->getPassword()
+            'password' => $user->getPassword(),
         ];
 
         return $this->json(['success' => true, 'response' => $response]);
@@ -44,11 +45,9 @@ class UserController extends AbstractController
     public function updateUser($id, Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $data = json_decode($request->getContent(), false);
-        $user = $this->em->getRepository(User::class)->find($id);
 
-        if (!$user) {
-            return $this->json(['success' => false, 'message' => 'User not found'], 404);
-        }
+        $user = $this->em->getRepository(User::class)->find($id);
+        if (!$user) return $this->json(['success' => false, 'message' => 'User not found'], 404);
 
         if (!$passwordHasher->isPasswordValid($user, $data->password)) {
             $hashedPassword = $passwordHasher->hashPassword($user, $data->password);
@@ -57,10 +56,11 @@ class UserController extends AbstractController
 
         $user->setFirstname($data->firstname);
         $user->setLastname($data->lastname);
-        $user->setEmail($data->email);
         $user->setAddress($data->address);
         $user->setZipcode($data->zipcode);
+        $user->setEmail($data->email);
         $user->setCity($data->city);
+        $user->setTel($data->tel);
 
         $this->em->flush();
 
