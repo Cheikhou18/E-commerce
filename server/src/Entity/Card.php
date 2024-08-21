@@ -23,6 +23,9 @@ class Card
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $expiration = null;
 
+    #[ORM\Column]
+    private ?int $iduser = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Card
     public function setExpiration(\DateTimeInterface $expiration): static
     {
         $this->expiration = $expiration;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?int
+    {
+        return $this->iduser;
+    }
+
+    public function setIdUser(int $iduser): static
+    {
+        $this->iduser = $iduser;
 
         return $this;
     }

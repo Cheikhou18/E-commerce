@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Card;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,6 +26,8 @@ class UserController extends AbstractController
         $user = $this->em->getRepository(User::class)->find($id);
         if (!$user) return new JsonResponse(['success' => false, 'message' => 'User not found'], 404);
 
+        $card = $this->em->getRepository(Card::class)->findByIduser($id);
+
         $response = [
             'id' => $user->getId(),
             'tel' => $user->getTel(),
@@ -35,8 +38,13 @@ class UserController extends AbstractController
             'roles' => $user->getRoles(),
             'firstname' => $user->getFirstname(),
             'lastname' => $user->getLastname(),
-            'password' => $user->getPassword(),
         ];
+
+        if ($card) {
+            $response['cardname'] = $card->getName();
+            $response['cardnumber'] = $card->getNumber();
+            $response['cardexpiration'] = $card->getExpiration();
+        }
 
         return $this->json(['success' => true, 'response' => $response]);
     }
@@ -47,6 +55,8 @@ class UserController extends AbstractController
         $data = json_decode($request->getContent(), false);
 
         $user = $this->em->getRepository(User::class)->find($id);
+        $card = $this->em->getRepository(Card::class)->findByIduser($id);
+
         if (!$user) return $this->json(['success' => false, 'message' => 'User not found'], 404);
 
         if (!$passwordHasher->isPasswordValid($user, $data->password)) {
@@ -61,6 +71,11 @@ class UserController extends AbstractController
         $user->setEmail($data->email);
         $user->setCity($data->city);
         $user->setTel($data->tel);
+
+        $card->setIduser($user->getId());
+        $card->setExpiration($data->cardexpiration);
+        $card->setNumber($data->cardnumber);
+        $card->setName($data->cardname);
 
         $this->em->flush();
 
