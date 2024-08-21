@@ -80,6 +80,14 @@ function Admin() {
     setFormVisible(true);
   }
 
+  function isNewProduct(creationDate) {
+    const productDate = new Date(creationDate);
+    const currentDate = new Date();
+    const differenceInTime = currentDate - productDate;
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    return differenceInDays <= 3;
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col">
@@ -115,6 +123,8 @@ function Admin() {
         {productsInDB?.map((product) => (
           <li className="border-t p-4" key={product.id}>
             {product.name} - {product.price}€
+            {isNewProduct(product.creation_date.date) && <span> NEW</span>}
+            {product.discount > 0 && <span> Discount on!</span>}
             <div className="flex gap-4">
               <button onClick={() => openFormToEdit(product)}>Edit</button>
               <button onClick={() => handleDeleteProduct(product.id)}>

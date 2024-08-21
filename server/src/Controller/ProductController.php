@@ -72,6 +72,8 @@ class ProductController extends AbstractController
         $product->setRecommended($data['recommended']);
         $product->setPopularity(0);
         $product->setDiscount($data['discount']);
+        $product->setCreationDate(new \DateTime());
+
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -152,6 +154,7 @@ class ProductController extends AbstractController
             'description' => $product->getDescription(),
             'similar_products' => $similarProducts,
             'discount' => $product->getDiscount(),
+            'creation' => $product->getCreationDate(),
         ];
 
         return $this->json([

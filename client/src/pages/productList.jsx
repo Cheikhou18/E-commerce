@@ -14,7 +14,6 @@ function ProductList() {
   const [sortOrder, setSortOrder] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
 
-  // Fetch the API and send it to const "products"
   useEffect(() => {
     async function fetchProducts() {
       const request = await getProducts();
@@ -25,17 +24,24 @@ function ProductList() {
     fetchProducts();
   }, []);
 
-  // Handle the changes on the searchBar
   const handleSearchChange = (searchTerm) => {
     setSearchTerm(searchTerm);
   };
-  // Handle the changes on the sortList
+
   const handleSortChange = (sortOrder) => {
     setSortOrder(sortOrder);
   };
-  // Handle the changes on the categoryList
+
   const handleCategoryChange = (categoryFilter) => {
     setCategoryFilter(categoryFilter);
+  };
+
+  const isNewProduct = (creationDate) => {
+    const productDate = new Date(creationDate);
+    const currentDate = new Date();
+    const differenceInTime = currentDate - productDate;
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    return differenceInDays <= 3;
   };
 
   const filteredProducts = FilteredProducts(
@@ -45,7 +51,6 @@ function ProductList() {
     categoryFilter
   );
 
-  // Define all suggestions with the name, image, and price of the products
   const allSuggestions = products.map((product) => ({
     id: product.id,
     name: product.name,
@@ -57,7 +62,6 @@ function ProductList() {
     <div>
       <div className="products-container">
         <h1>Products</h1>
-        {/* When search changes we call suggestions and handleSearchChange, same for sort and categories */}
         <div className="filters">
           <SearchBar
             onSearchChange={handleSearchChange}
@@ -67,11 +71,14 @@ function ProductList() {
           <CategoryFilter onCategoryChange={handleCategoryChange} />
         </div>
         <div className="products-grid">
-          {/* call either ProductCard or ProductUnavailable */}
           {filteredProducts?.map((product) => (
             <div className="product-card" key={product.id}>
               {product.stock > 0 ? (
-                <ProductCard product={product} />
+                <ProductCard product={product}>
+                  {isNewProduct(product.creation_date.date) && (
+                    <span className="text-red-500 ml-2">NEW</span>
+                  )}
+                </ProductCard>
               ) : (
                 <ProductUnavailable product={product} />
               )}

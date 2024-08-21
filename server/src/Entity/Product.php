@@ -47,6 +47,9 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?int $discount = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $creation_date = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -180,6 +183,18 @@ class Product
     public function setDiscount(?int $discount): static
     {
         $this->discount = $discount;
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creation_date;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creation_date): static
+    {
+        $this->creation_date = $creation_date;
 
         return $this;
     }

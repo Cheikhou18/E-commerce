@@ -2,10 +2,10 @@ import React from "react";
 import { useCartContext } from "../../context/cart";
 import { Link } from "react-router-dom";
 import "../../assets/css/Products.css";
-import RecommendedBadge from "../RecommendedBadge"; // Importez le composant
+import RecommendedBadge from "../RecommendedBadge";
 
 function ProductCard(props) {
-  const { product } = props;
+  const { product, children } = props;
   const { increaseProductQuantity } = useCartContext();
 
   return (
@@ -19,7 +19,7 @@ function ProductCard(props) {
             Price :{" "}
             {product.discount > 0
               ? (product.price * (1 - product.discount / 100)).toFixed(2)
-              : (product.price) .toFixed(2)}
+              : product.price.toFixed(2)}
             €
           </p>
           {product.discount > 0 && <p>{product.discount}% off!</p>}
@@ -32,6 +32,9 @@ function ProductCard(props) {
           {product.recommended && <RecommendedBadge />}
         </div>
       </Link>
+
+      {/* Affichage de l'indicateur NEW ou tout autre contenu enfant */}
+      {children}
 
       <button
         onClick={() => increaseProductQuantity(product.id)}
