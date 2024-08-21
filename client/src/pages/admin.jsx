@@ -134,7 +134,8 @@ function Admin() {
           <button onClick={openFormToAdd}>+ Add a product</button>
         </li>
       </ul>
-      <DeliveryCostManager />{" "}
+
+      <DeliveryCostManager />
       {/* Ajouter le gestionnaire de frais de livraison */}
     </div>
   );
