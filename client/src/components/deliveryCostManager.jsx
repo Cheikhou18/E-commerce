@@ -8,10 +8,9 @@ import {
 function DeliveryCostManager() {
   const [message, setMessage] = useState();
   const [existingDeliveryTypes, setExistingDeliveryTypes] = useState();
-  const [selectedDelivery, setSelectedDelivery] = useState();
   const [delivery, setDelivery] = useState({
     delivery_type: "",
-    price_per_km: parseFloat(1),
+    price_per_km: 0,
   });
 
   const [updatedDelivery, setUpdatedDelivery] = useState();
@@ -19,15 +18,6 @@ function DeliveryCostManager() {
   useEffect(() => {
     requestDeliveryTypes();
   }, []);
-
-  useEffect(() => {
-    const timer = () =>
-      setTimeout(() => {
-        requestUpdateDelivery();
-      }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [updatedDelivery]);
 
   async function requestDeliveryTypes() {
     const request = await getDeliveryTypes();
@@ -40,14 +30,14 @@ function DeliveryCostManager() {
     const request = await createDeliveryType(delivery);
     setMessage(request.response);
 
-    getDeliveryTypes();
+    requestDeliveryTypes();
   }
 
   async function requestUpdateDelivery() {
     const request = await updateDeliveryType(updatedDelivery);
     setMessage(request.response);
 
-    getDeliveryTypes();
+    requestDeliveryTypes();
   }
 
   const handlePriceChange = (e) => {
@@ -66,35 +56,13 @@ function DeliveryCostManager() {
       <div className="flex flex-col gap-4 p-7">
         <div>{message}</div>
 
-        {existingDeliveryTypes ? (
-          <div className="flex flex-col gap-3">
-            <h2>Current delivery types</h2>
-
-            <div className="flex gap-1">
-              <select className="border px-4 py-2">
-                {existingDeliveryTypes.map((delivery) => {
-                  return (
-                    <option
-                      onChange={(e) => setSelectedDelivery(e.target.value)}
-                      key={delivery.id}
-                      value={delivery.delivery_type}
-                    >
-                      {delivery.delivery_type}
-                    </option>
-                  );
-                })}
-              </select>
-
-              <input
-                type="text"
-                className="px-4 py-2 border"
-                defaultValue={selectedDelivery?.price_per_km}
-                onChange={(e) => setUpdatedDelivery(e.target.value)}
-                placeholder="Price per km"
-              />
+        {existingDeliveryTypes?.map((delivery) => {
+          return (
+            <div key={delivery.id}>
+              {delivery.delivery_type} : {delivery.price_per_km}€/km
             </div>
-          </div>
-        ) : null}
+          );
+        })}
 
         <div className="flex flex-col gap-3">
           <h2>Create a new delivery type</h2>
@@ -103,18 +71,20 @@ function DeliveryCostManager() {
             <input
               type="text"
               placeholder="Delivery name"
+              name="delivery_type"
               className="border rounded-sm px-4 py-2"
               onChange={(e) =>
-                setDelivery({ ...delivery, deliveryType: e.target.value })
+                setDelivery({ ...delivery, delivery_type: e.target.value })
               }
             />
 
             <input
               type="number"
               step="0.01"
+              name="price_per_km"
               className="border rounded-sm px-4 py-2"
-              defaultValue={delivery.price_per_km}
-              onChange={handlePriceChange}
+              defaultValue="0"
+              onChange={(e) => handlePriceChange(e)}
               placeholder="Price per kilometer"
             />
 

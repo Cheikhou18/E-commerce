@@ -58,8 +58,8 @@ class ShippingController extends AbstractController
     {
         $data = json_decode($request->getContent(), false);
 
-        $pricePerKm = $data->pricePerKm;
-        $deliveryType = $data->deliveryType;
+        $pricePerKm = $data->price_per_km;
+        $deliveryType = $data->delivery_type;
 
         $deliveryTypeAlreadyExists = $em->getRepository(Delivery::class)->findByDeliveryType($deliveryType);
         if ($deliveryTypeAlreadyExists) return $this->json(['success' => false, 'response' => 'This delivery type already exists.'], 400);
