@@ -71,6 +71,9 @@ class AuthenticationController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Incorrect password']);
         }
 
+        $userExists->setLastConnected(new DateTime());
+        $this->em->flush();
+
         return $this->json(['success' => true, 'id' => $userExists->getId()]);
     }
 

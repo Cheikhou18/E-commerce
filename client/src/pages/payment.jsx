@@ -1,18 +1,14 @@
-import ProductsInPayment from "../components/payment/productsInPayment.jsx";
-import { useCartContext } from "../context/cart/index.js";
-import { useAuth } from "../context/admin.js";
-
-import { useHistory, useNavigate } from "react-router-dom";
 import Total from "../components/payment/total.jsx";
-import Address from "../components/payment/address.jsx";
-import { useEffect } from "react";
+import { useCartContext } from "../context/cart/index.js";
+import Address from "../components/payment/addressInfo.jsx";
+import ProductsInPayment from "../components/payment/productsInPayment.jsx";
+import CardInfo from "../components/payment/cardInfo.jsx";
 
 function Payment() {
-  const { user } = useAuth();
   const { cartProducts } = useCartContext();
 
   return (
-    <div className="p-10">
+    <div className="flex flex-col gap-6 p-10">
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <h3 className="font-medium text-xl">Cart</h3>
@@ -22,14 +18,13 @@ function Payment() {
           })}
         </div>
 
-        <div>
-          <Total />
-        </div>
+        <Total />
       </div>
 
-      <div>
-        <Address />
-      </div>
+      <Address />
+      <CardInfo />
+
+      <button className="border rounded-md px-12 py-2 w-fit">Pay</button>
     </div>
   );
 }

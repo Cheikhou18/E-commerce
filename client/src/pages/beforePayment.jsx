@@ -7,16 +7,20 @@ function BeforePayment() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.id) navigate("/cart");
+    if (user != {}) navigate("/cart");
   }, [user]);
 
   return (
-    <>
+    <div className="flex flex-col gap-4 justify-center items-center h-[90vh]">
       <h3>Before proceeding to cart</h3>
 
-      <Link to="/signin">Log in</Link>
-      <Link to="/cart">Continue without an account</Link>
-    </>
+      <Link className="underline" to="/signin">
+        Connect to your account
+      </Link>
+      <Link className="underline" to="/cart">
+        Continue as a Guest
+      </Link>
+    </div>
   );
 }
 

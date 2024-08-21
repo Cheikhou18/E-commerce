@@ -1,16 +1,20 @@
-import { addProduct, deleteProduct, editProduct } from "../api/products.js";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/admin";
-
-import AddCategory from "../components/category/createCategory.jsx";
-import CategoryCard from "../components/category/categoryCard.jsx";
+import {
+  addProduct,
+  deleteProduct,
+  editProduct,
+  getProducts,
+} from "../api/products.js";
 import ProductForm from "../components/product/productForm.jsx";
-import { useCartContext } from "../context/cart/index.js";
 import { getCategories } from "../api/categories.js";
+import CategoryCard from "../components/category/categoryCard.jsx";
+import AddCategory from "../components/category/createCategory.jsx";
+import DeliveryCostManager from "../components/deliveryCostManager.jsx";
 
 function Admin() {
-  const { productsInDB, fetchProductsFromDB } = useCartContext();
+  const [products, setProducts] = useState();
   const [categories, setCategories] = useState();
 
   const [isFormVisible, setFormVisible] = useState(false);
@@ -23,8 +27,14 @@ function Admin() {
 
   useEffect(() => {
     if (isAdmin === false) return navigate("/");
+    fetchProducts();
     fetchCategories();
   }, [isAdmin]);
+
+  async function fetchProducts() {
+    const request = await getProducts();
+    if (request.success) setProducts(request.produits);
+  }
 
   async function fetchCategories() {
     const request = await getCategories();
@@ -43,7 +53,7 @@ function Admin() {
   const handleAddProduct = async (data) => {
     const request = await addProduct(data);
     if (request.success) {
-      fetchProductsFromDB();
+      fetchProducts();
     }
 
     displayMessage("products", request.message);
@@ -53,7 +63,7 @@ function Admin() {
   const handleEditProduct = async (data) => {
     const request = await editProduct(selectedProduct.id, data);
     if (request.success) {
-      fetchProductsFromDB();
+      fetchProducts();
     }
 
     displayMessage("products", request.message);
@@ -66,7 +76,7 @@ function Admin() {
 
     if (request.success) {
       displayMessage("products", request.message);
-      fetchProductsFromDB();
+      fetchProducts();
     }
   };
 
@@ -102,25 +112,21 @@ function Admin() {
             </li>
           ))}
 
-          <li className="flex justify-center border-y py-8">
+          <li className="flex justify-center border-b pb-8">
             <AddCategory props={{ setCategories }} />
           </li>
         </ul>
       </div>
-
       <h3 className="text-xl font-bold p-10">Products</h3>
-
       {isFormVisible && (
         <ProductForm
           product={selectedProduct}
           onSubmit={selectedProduct ? handleEditProduct : handleAddProduct}
         />
       )}
-
       {message.products}
-
       <ul>
-        {productsInDB?.map((product) => (
+        {products?.map((product) => (
           <li className="border-t p-4" key={product.id}>
             {product.name} - {product.price}€
             {isNewProduct(product.creation_date.date) && <span> NEW</span>}
@@ -138,6 +144,9 @@ function Admin() {
           <button onClick={openFormToAdd}>+ Add a product</button>
         </li>
       </ul>
+
+      <DeliveryCostManager />
+      {/* Ajouter le gestionnaire de frais de livraison */}
     </div>
   );
 }
