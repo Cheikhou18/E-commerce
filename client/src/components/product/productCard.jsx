@@ -1,8 +1,8 @@
-import React from 'react';
-import { useCartContext } from "../context/cart";
+import React from "react";
+import { useCartContext } from "../../context/cart";
 import { Link } from "react-router-dom";
-import "../assets/css/Products.css";
-import RecommendedBadge from "./RecommendedBadge"; // Importez le composant
+import "../../assets/css/Products.css";
+import RecommendedBadge from "../RecommendedBadge"; // Importez le composant
 
 function ProductCard(props) {
   const { product } = props;
@@ -12,14 +12,25 @@ function ProductCard(props) {
     <div className="relative flex flex-col">
       <Link to={"/products/" + product.id}>
         <img src={product.image} alt={product.name} className="product-image" />
+
         <div className="product-details">
           <h2 className="product-name">{product.name}</h2>
-          <p className="product-price">Price : {product.price}</p>
+          <p className="product-price">
+            Price :{" "}
+            {product.discount > 0
+              ? (product.price * (1 - product.discount / 100)).toFixed(2)
+              : (product.price) .toFixed(2)}
+            €
+          </p>
+          {product.discount > 0 && <p>{product.discount}% off!</p>}
           {product.stock < 10 && (
-            <p className="stock-warning" style={{color: 'red'}}>Attention : Moins de 10 articles en stock!</p>
+            <p className="stock-warning text-red-500">
+              Warning: only {product.stock} left in stock!
+            </p>
           )}
+
+          {product.recommended && <RecommendedBadge />}
         </div>
-        {product.recommended && <RecommendedBadge />} {/* Affiche le badge si recommandé */}
       </Link>
 
       <button

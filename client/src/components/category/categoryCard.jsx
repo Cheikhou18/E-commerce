@@ -1,4 +1,4 @@
-import { deleteCategory } from "../api/categories";
+import { deleteCategory } from "../../api/categories";
 
 function CategoryCard({ props }) {
   const { category, setMessage, setCategories, fetchCategories } = props;

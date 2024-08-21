@@ -41,6 +41,11 @@ class Product
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $recommended = false;
 
+    #[ORM\Column(length: 255)]
+    private ?string $color = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $discount = null;
 
     public function getId(): ?int
     {
@@ -151,6 +156,30 @@ class Product
     public function setRecommended(bool $recommended): static
     {
         $this->recommended = $recommended;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?int
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?int $discount): static
+    {
+        $this->discount = $discount;
 
         return $this;
     }

@@ -3,7 +3,7 @@ import '../assets/css/RecommendedBadge.css';
 
 const RecommendedBadge = () => {
   return (
-    <span className="recommended-badge">Recommandé</span>
+    <span className="recommended-badge">Recommanded</span>
   );
 };
 

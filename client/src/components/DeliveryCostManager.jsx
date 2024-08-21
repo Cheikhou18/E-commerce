@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 function DeliveryCostManager() {
   const [distance, setDistance] = useState('');
   const [deliveryCost, setDeliveryCost] = useState(null);
+  const [pricePerKm, setPricePerKm] = useState(1); // Par défaut à 1€/km
 
   const handleCalculate = async () => {
     try {
@@ -11,7 +12,7 @@ function DeliveryCostManager() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ distance: parseFloat(distance) }),
+        body: JSON.stringify({ distance: parseFloat(distance), pricePerKm }),
       });
 
       const data = await response.json();
@@ -25,6 +26,10 @@ function DeliveryCostManager() {
     }
   };
 
+  const handlePriceChange = (e) => {
+    setPricePerKm(parseFloat(e.target.value));
+  };
+
   return (
     <div>
       <h3 className="text-xl font-bold p-10">Calculate Delivery Cost</h3>
@@ -32,14 +37,17 @@ function DeliveryCostManager() {
         type="number"
         value={distance}
         onChange={(e) => setDistance(e.target.value)}
-        placeholder="Enter distance in km"
-        className="border p-2"
+        placeholder="Enter distance"
       />
-      <button onClick={handleCalculate} className="ml-2 p-2 bg-blue-500 text-white">
-        Calculate
-      </button>
+      <input
+        type="number"
+        value={pricePerKm}
+        onChange={handlePriceChange}
+        placeholder="Price per kilometer"
+      />
+      <button onClick={handleCalculate}>Calculate</button>
       {deliveryCost !== null && (
-        <p className="mt-4">Delivery Cost: {deliveryCost}€</p>
+        <p>Delivery Cost: {deliveryCost}€</p>
       )}
     </div>
   );

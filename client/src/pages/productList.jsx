@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../api/products";
-import ProductCard from "../components/productCard";
+import ProductCard from "../components/product/productCard";
 import SearchBar from "../components/searchBar";
 import SortSelect from "../components/sortSelect";
-import CategoryFilter from "../components/categoryFilter";
+import CategoryFilter from "../components/category/categoryFilter";
 import FilteredProducts from "../components/filteredProducts";
 import "../assets/css/Products.css";
 import ProductUnavailable from "../components/productUnavailable";

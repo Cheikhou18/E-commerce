@@ -66,12 +66,12 @@ class ProductController extends AbstractController
         $product->setPrice($data['price']);
         $product->setImage($data['image']);
         $product->setStock($data['stock']);
+        $product->setColor($data['color']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
         $product->setPopularity(0);
-        
-        
+        $product->setDiscount($data['discount']);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -94,10 +94,11 @@ class ProductController extends AbstractController
         $product->setPrice($data['price']);
         $product->setImage($data['image']);
         $product->setStock($data['stock']);
+        $product->setColor($data['color']);
         $product->setIdCategory($data['id_category']);
         $product->setDescription($data['description']);
         $product->setRecommended($data['recommended']);
-    
+        $product->setDiscount($data['discount']);
 
         $this->entityManager->flush();
 
@@ -131,12 +132,13 @@ class ProductController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Product does not exist']);
         }
 
-        // Increase popularity of the product
-
+        // Augmenter la popularité du produit
         $popularity = $product->getPopularity() + 1;
         $product->setPopularity($popularity);
-
         $entityManager->flush();
+
+        $similarProducts = $this->getSimilarProductsByName($product->getName(), $product->getId())->getContent();
+        $similarProducts = json_decode($similarProducts, true)['response'];
 
         $response = [
             'id' => $product->getId(),
@@ -144,9 +146,12 @@ class ProductController extends AbstractController
             'image' => $product->getImage(),
             'price' => $product->getPrice(),
             'stock' => $product->getStock(),
+            'color' => $product->getColor(),
             'category' => $product->getIdCategory(),
             'features' => $product->getIdFeatures(),
             'description' => $product->getDescription(),
+            'similar_products' => $similarProducts,
+            'discount' => $product->getDiscount(),
         ];
 
         return $this->json([
@@ -155,21 +160,46 @@ class ProductController extends AbstractController
         ]);
     }
 
+
     #[Route('/api/delivery', name: 'calculate_delivery', methods: ['POST'])]
     public function calculateDelivery(Request $request): JsonResponse
     {
-    $data = json_decode($request->getContent(), true);
-    $distance = $data['distance'] ?? 0;
+        $data = json_decode($request->getContent(), true);
+        $distance = $data['distance'] ?? 0;
+        $pricePerKm = $data['pricePerKm'] ?? 0.75; 
+        $deliveryCost = $pricePerKm * $distance;
 
-    
-    $pricePerKm = 0.75; 
-    $deliveryCost = $pricePerKm * $distance;
+        return new JsonResponse([
+            'success' => true,
+            'shippingCost' => $deliveryCost,
+        ]);
+    }
 
-    return new JsonResponse([
-        'success' => true,
-        'shippingCost' => $deliveryCost,
-    ]);
-}
 
+    #[Route('/api/products/similar-by-name/{name}/{currentProductId}', name: 'get_similar_products_by_name', methods: ['GET'])]
+    public function getSimilarProductsByName($name, $currentProductId): JsonResponse
+    {
+        $products = $this->entityManager->getRepository(Product::class)->findBy(['name' => $name]);
+
+        $productData = [];
+
+        foreach ($products as $product) {
+            if ($product->getId() != $currentProductId) {
+                $productData[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(),
+                    'image' => $product->getImage(),
+                    'stock' => $product->getStock(),
+                    'color' => $product->getColor(),
+                ];
+            }
+        }
+
+        return $this->json([
+            'success' => true,
+            'response' => $productData,
+        ]);
+    }
 
 }

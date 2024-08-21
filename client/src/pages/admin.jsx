@@ -7,10 +7,10 @@ import {
   editProduct,
   getProducts,
 } from "../api/products.js";
-import ProductForm from "../components/productForm";
+import ProductForm from "../components/product/productForm.jsx";
 import { getCategories } from "../api/categories.js";
-import CategoryCard from "../components/categoryCard.jsx";
-import AddCategory from "../components/createCategory.jsx";
+import CategoryCard from "../components/category/categoryCard.jsx";
+import AddCategory from "../components/category/createCategory.jsx";
 import DeliveryCostManager from "../components/DeliveryCostManager"; // Importer le composant
 
 function Admin() {
