@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/admin";
-import { shippingData } from "../../api/delivery";
+import { getDeliveryTypes, shippingData } from "../../api/delivery";
 import { useCartContext } from "../../context/cart";
 import { updateAccount } from "../../api/user";
 
@@ -10,6 +10,8 @@ function Address() {
 
   const [address, setAddress] = useState();
   const [message, setMessage] = useState();
+  const [priceperkm, setpriceperkm] = useState(1);
+  const [deliveryTypes, setDeliveryTypes] = useState();
 
   useEffect(() => {
     setAddress({
@@ -24,10 +26,16 @@ function Address() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       updateUser();
+      fetchDeliveryTypes();
     }, 1000);
 
     return () => clearTimeout(timeout);
   }, [address]);
+
+  async function fetchDeliveryTypes() {
+    const request = await getDeliveryTypes();
+    setDeliveryTypes(request.response);
+  }
 
   function handleChangeAddress(e) {
     setAddress((currentAddress) => {
@@ -46,11 +54,11 @@ function Address() {
 
     const requestDistanceCalculation = await shippingData(address);
     const result = requestDistanceCalculation?.response?.rows[0]?.elements[0];
-    // const getDeliveryPriceByKm = await getDeliveryPriceByKm();
 
     if (result?.status === "OK") {
-      const distance = result?.distance?.value;
-      setShippingFee((5 + 0.001 * distance).toFixed(0));
+      const distance = result?.distance?.value / 1000; // Convert m to km
+
+      setShippingFee((5 + priceperkm * distance).toFixed(0));
     }
 
     // Update name and/or address
