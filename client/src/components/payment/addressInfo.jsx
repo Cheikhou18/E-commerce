@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/admin";
 import { shippingData } from "../../api/delivery";
 import { useCartContext } from "../../context/cart";
@@ -8,18 +8,26 @@ function Address() {
   const { user } = useAuth();
   const { setShippingFee } = useCartContext();
 
-  const [name, setName] = useState({
-    firstname: user?.firstname,
-    lastname: user?.lastname,
-  });
-
-  const [address, setAddress] = useState({
-    address: user?.address,
-    city: user?.city,
-    zipcode: user?.zipcode,
-  });
-
+  const [address, setAddress] = useState();
   const [message, setMessage] = useState();
+
+  useEffect(() => {
+    setAddress({
+      firstname: user?.firstname,
+      lastname: user?.lastname,
+      address: user?.address,
+      city: user?.city,
+      zipcode: user?.zipcode,
+    });
+  }, [user]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateUser();
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [address]);
 
   function handleChangeAddress(e) {
     setAddress((currentAddress) => {
@@ -27,14 +35,8 @@ function Address() {
     });
   }
 
-  function handleChangeName(e) {
-    setName((currentName) => {
-      return { ...currentName, [e.target.name]: e.target.value };
-    });
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function updateUser() {
+    setMessage();
 
     const formIsComplete = Object.values(address).every(
       (value) => value !== ("" || undefined)
@@ -42,35 +44,31 @@ function Address() {
 
     if (!formIsComplete) return setMessage("Please enter your address");
 
-    const requestShippingFee = await shippingData(address);
+    const requestDistanceCalculation = await shippingData(address);
+    const result = requestDistanceCalculation?.response?.rows[0]?.elements[0];
+    // const getDeliveryPriceByKm = await getDeliveryPriceByKm();
 
-    if (requestShippingFee?.response?.status === "OK") {
-      const distance =
-        requestShippingFee?.response?.rows[0]?.elements[0]?.distance?.value;
-
+    if (result?.status === "OK") {
+      const distance = result?.distance?.value;
       setShippingFee((5 + 0.001 * distance).toFixed(0));
     }
 
     // Update name and/or address
-    await updateAccount(user?.id, {
-      ...user,
-      ...address,
-      ...name,
-    });
+    await updateAccount(user?.id, { ...user, ...address });
   }
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={(e) => handleSubmit(e)}>
+    <div className="flex flex-col gap-2">
       <h3 className="text-lg font-medium">Shipping address</h3>
 
       {message}
 
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         <input
           type="text"
           name="lastname"
           defaultValue={user?.lastname}
-          onChange={(e) => handleChangeName(e)}
+          onChange={(e) => handleChangeAddress(e)}
           placeholder="Last Name"
           className="border p-2"
         />
@@ -79,13 +77,13 @@ function Address() {
           type="text"
           name="firstname"
           defaultValue={user?.firstname}
-          onChange={(e) => handleChangeName(e)}
+          onChange={(e) => handleChangeAddress(e)}
           placeholder="First Name"
           className="border p-2"
         />
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         <input
           type="text"
           defaultValue={user?.address}
@@ -113,9 +111,7 @@ function Address() {
           className="border p-2"
         />
       </div>
-
-      <button className="border px-4 py-2">Submit</button>
-    </form>
+    </div>
   );
 }
 

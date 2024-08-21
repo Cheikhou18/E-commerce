@@ -11,11 +11,15 @@ function BeforePayment() {
   }, [user]);
 
   return (
-    <div className="flex flex-col gap-4 items-center border">
+    <div className="flex flex-col gap-4 justify-center items-center h-[90vh]">
       <h3>Before proceeding to cart</h3>
 
-      <Link to="/signin">Connect to your account</Link>
-      <Link to="/cart">Continue without as a Guest</Link>
+      <Link className="underline" to="/signin">
+        Connect to your account
+      </Link>
+      <Link className="underline" to="/cart">
+        Continue without as a Guest
+      </Link>
     </div>
   );
 }
