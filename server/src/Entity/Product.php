@@ -50,8 +50,6 @@ class Product
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $creation_date = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $gift_wrapping = null;
 
     public function getId(): ?int
     {
@@ -202,15 +200,5 @@ class Product
         return $this;
     }
 
-    public function getGiftWrapping(): ?int
-    {
-        return $this->gift_wrapping;
-    }
 
-    public function setGiftWrapping(?int $gift_wrapping): static
-    {
-        $this->gift_wrapping = $gift_wrapping;
-
-        return $this;
-    }
 }
