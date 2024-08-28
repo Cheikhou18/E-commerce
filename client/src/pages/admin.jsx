@@ -146,7 +146,7 @@ function Admin() {
       </ul>
 
       <DeliveryCostManager />
-      {/* Ajouter le gestionnaire de frais de livraison */}
+      
     </div>
   );
 }

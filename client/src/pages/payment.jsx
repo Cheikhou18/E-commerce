@@ -19,6 +19,9 @@ function Payment() {
         </div>
 
         <Total />
+
+       
+        {cartProducts.reduce((total, product) => total + product.price * product.quantity, 0) >= 150 && <div>Ajouter un papier cadeau</div>}
       </div>
 
       <Address />
