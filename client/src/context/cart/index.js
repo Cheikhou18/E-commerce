@@ -1,9 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { post } from "../../api";
-
-// Context of the shopping cart, it contains a context provider and a useContext
-// With the functions you should be able to get the products quantities in the cart,
-// add / remove a product and see the total price of the cart
 import { useLocalStorage } from "./hooks/localStorage";
 import { getProducts } from "../../api/products";
 
@@ -32,6 +28,8 @@ function CartProvider({ children }) {
     const product = productsInDB.find((i) => i.id === cartProduct.id);
     return total + (product?.price || 0) * cartProduct.quantity;
   }, 0);
+
+  const GiftWrap = cartTotalPrice >= 1000; 
 
   async function fetchProductsFromDB() {
     const request = await getProducts();
@@ -96,6 +94,7 @@ function CartProvider({ children }) {
     cartProducts,
     cartQuantity,
     cartTotalPrice,
+    GiftWrap,
     getProductQuantity,
     increaseProductQuantity,
     decreaseProductQuantity,
