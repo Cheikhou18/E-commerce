@@ -57,12 +57,12 @@ function Address() {
 
     if (result?.status === "OK") {
       const distance = result?.distance?.value / 1000; // Convert m to km
-
       setShippingFee((5 + priceperkm * distance).toFixed(0));
     }
 
     // Update name and/or address
-    await updateAccount(user?.id, { ...user, ...address });
+    const request = await updateAccount(user?.id, { ...user, ...address });
+    console.log({ ...user, ...address });
   }
 
   return (

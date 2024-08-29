@@ -19,6 +19,13 @@ function Total() {
         <p>Shipping</p>
         <p>{shippingFee}€</p>
       </div>
+
+      {cartTotalPrice >= 1000 && (
+        <label className="flex gap-1 text-sm">
+          <input type="checkbox" />
+          Gift wrapping
+        </label>
+      )}
     </div>
   );
 }

@@ -74,7 +74,20 @@ class AuthenticationController extends AbstractController
         $userExists->setLastConnected(new DateTime());
         $this->em->flush();
 
-        return $this->json(['success' => true, 'id' => $userExists->getId()]);
+        $response = [
+            'id' => $userExists->getId(),
+            'tel' => $userExists->getTel(),
+            'city' => $userExists->getCity(),
+            'address' => $userExists->getAddress(),
+            'zipcode' => $userExists->getZipcode(),
+            'password' => $userExists->getPassword(),
+            'email' => $userExists->getEmail(),
+            'roles' => $userExists->getRoles(),
+            'firstname' => $userExists->getFirstname(),
+            'lastname' => $userExists->getLastname(),
+        ];
+
+        return $this->json(['success' => true, 'response' => $response]);
     }
 
     #[Route('/api/admin/verif', name: 'app_verif_admin')]

@@ -17,11 +17,18 @@ export function ProductsInCart({ id, quantity }) {
         </span>
 
         <button className="text-xs" onClick={() => removeFromCart(id)}>
-          Retirer du panier
+          Remove from cart
         </button>
       </div>
 
-      <span className="p-1">{(product.price * quantity * (1 - (product?.discount / 100 || 0))).toFixed(2)}€</span>
+      <span className="p-1">
+        {(
+          product.price *
+          quantity *
+          (1 - (product?.discount / 100 || 0))
+        ).toFixed(2)}
+        €
+      </span>
     </div>
   );
 }

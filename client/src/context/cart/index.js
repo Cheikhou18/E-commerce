@@ -29,8 +29,6 @@ function CartProvider({ children }) {
     return total + (product?.price || 0) * cartProduct.quantity;
   }, 0);
 
-  const GiftWrap = cartTotalPrice >= 1000; 
-
   async function fetchProductsFromDB() {
     const request = await getProducts();
     if (request.success) setProductsInDB(request.produits);
@@ -94,7 +92,6 @@ function CartProvider({ children }) {
     cartProducts,
     cartQuantity,
     cartTotalPrice,
-    GiftWrap,
     getProductQuantity,
     increaseProductQuantity,
     decreaseProductQuantity,

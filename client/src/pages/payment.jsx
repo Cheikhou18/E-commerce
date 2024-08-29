@@ -5,7 +5,7 @@ import ProductsInPayment from "../components/payment/productsInPayment.jsx";
 import CardInfo from "../components/payment/cardInfo.jsx";
 
 function Payment() {
-  const { cartProducts, GiftWrap } = useCartContext();
+  const { cartProducts } = useCartContext();
 
   return (
     <div className="flex flex-col gap-6 p-10">
@@ -19,13 +19,6 @@ function Payment() {
         </div>
 
         <Total />
-        
-        {GiftWrap && (
-          <label>
-            <input type="checkbox" />
-            Ajouter un papier cadeau
-          </label>
-        )}
       </div>
 
       <Address />

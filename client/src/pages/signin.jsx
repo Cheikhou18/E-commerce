@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { requestSignIn } from "../api/auth/authentication";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/admin";
 
 function SignIn() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [message, setMessage] = useState();
-  const [user, setUser] = useState({
+  const [data, setData] = useState({
     email: "",
     password: "",
   });
@@ -17,16 +19,18 @@ function SignIn() {
     setMessage();
 
     // Verify if the form is complete
-    const formIsComplete = Object.values(user).every((value) => value !== "");
+    const formIsComplete = Object.values(data).every((value) => value !== "");
     if (!formIsComplete) return setMessage("Please complete the form");
 
-    const request = await requestSignIn({ ...user });
+    const request = await requestSignIn({ ...data });
 
     if (!request.success) {
       return setMessage(request.message);
     }
 
-    localStorage.setItem("id", request.id);
+    localStorage.setItem("id", request.response.id);
+    setUser(request.response);
+
     navigate("/");
   }
 
@@ -41,7 +45,7 @@ function SignIn() {
             type="text"
             placeholder="example@email.com"
             className="border px-4 py-2"
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
+            onChange={(e) => setData({ ...data, email: e.target.value })}
           />
         </div>
 
@@ -51,7 +55,7 @@ function SignIn() {
             type="password"
             placeholder="********"
             className="border px-4 py-2"
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            onChange={(e) => setData({ ...data, password: e.target.value })}
           />
         </div>
 
