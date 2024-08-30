@@ -59,6 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $last_connected = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $card = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -238,6 +241,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastConnected(?\DateTimeInterface $last_connected): static
     {
         $this->last_connected = $last_connected;
+
+        return $this;
+    }
+
+    public function getCard(): ?array
+    {
+        return $this->card;
+    }
+
+    public function setCard(?array $card): static
+    {
+        $this->card = $card;
 
         return $this;
     }
