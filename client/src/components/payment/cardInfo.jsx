@@ -1,12 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { updateAccount } from "../../api/user";
+import { useAuth } from "../../context/admin";
 
-function CardInfo() {
+function CardInfo({ props }) {
+  const { user } = useAuth();
   const [message, setMessage] = useState();
-  const [cardInfo, setCardInfo] = useState();
+  const { userInfo, setUserInfo } = props;
+
+  useEffect(() => {
+    setUserInfo({ ...userInfo, card: { ...user?.card } });
+  }, [user]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleSubmit();
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [userInfo?.cardInfo]);
+
+  async function handleSubmit() {
+    const formIsComplete = Object.values(userInfo?.card).every(
+      (value) => value !== ("" || undefined)
+    );
+
+    if (!formIsComplete)
+      return setMessage("Please enter your card informations");
+
+    console.log({ ...user, card: userInfo?.card });
+    await updateAccount(user?.id, { ...user, card: [userInfo?.card] });
+  }
 
   function handleChange(e) {
-    setCardInfo((currentcardInfo) => {
-      return { ...currentcardInfo, [e.target.name]: e.target.value };
+    setUserInfo((previous) => {
+      return {
+        ...previous,
+        card: { ...previous.card, [e.target.name]: e.target.value },
+      };
     });
   }
 
@@ -22,6 +52,7 @@ function CardInfo() {
           <input
             type="text"
             name="number"
+            defaultValue={user?.card?.number}
             onChange={(e) => handleChange(e)}
             placeholder="1234 5678 9012 3456"
             className="border p-2"
@@ -33,6 +64,7 @@ function CardInfo() {
           <input
             type="text"
             name="name"
+            defaultValue={user?.card?.name}
             onChange={(e) => handleChange(e)}
             placeholder="Cardholder Name"
             className="border p-2"
@@ -43,7 +75,19 @@ function CardInfo() {
           <label>Expiration date</label>
           <input
             type="month"
-            name="expiration date"
+            name="date"
+            defaultValue={user?.card?.date}
+            onChange={(e) => handleChange(e)}
+            className="border p-2"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label>CVV</label>
+          <input
+            type="text"
+            name="cvv"
+            defaultValue={user?.card?.cvv}
             onChange={(e) => handleChange(e)}
             className="border p-2"
           />
