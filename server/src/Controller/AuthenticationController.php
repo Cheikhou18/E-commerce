@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use DateTime;
 use DateTimeImmutable;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,12 +46,22 @@ class AuthenticationController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
-        // Find newly created user in database
-        $newUser = $this->em->getRepository(User::class)->findOneByEmail($data->email);
+        $response = [
+            'id' => $user->getId(),
+            'tel' => $user->getTel(),
+            'city' => $user->getCity(),
+            'address' => $user->getAddress(),
+            'zipcode' => $user->getZipcode(),
+            'password' => $user->getPassword(),
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+        ];
 
         return $this->json([
             'success' => true,
-            'id' => $newUser->getId()
+            'response' => $response
         ]);
     }
 
@@ -80,11 +90,11 @@ class AuthenticationController extends AbstractController
             'city' => $userExists->getCity(),
             'address' => $userExists->getAddress(),
             'zipcode' => $userExists->getZipcode(),
-            'password' => $userExists->getPassword(),
             'email' => $userExists->getEmail(),
             'roles' => $userExists->getRoles(),
             'firstname' => $userExists->getFirstname(),
             'lastname' => $userExists->getLastname(),
+            'card' => $userExists->getCard()
         ];
 
         return $this->json(['success' => true, 'response' => $response]);

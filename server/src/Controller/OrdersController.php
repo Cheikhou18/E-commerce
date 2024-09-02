@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-class OrderController extends AbstractController
+class OrdersController extends AbstractController
 {
     private EntityManagerInterface $em;
 
@@ -37,7 +37,7 @@ class OrderController extends AbstractController
         return $this->json(['success' => true, 'response' => $order->getId()]);
     }
 
-    #[Route('/api/orders/{id}', name: 'create_order', methods: ['GET'])]
+    #[Route('/api/orders/{id}', name: 'get_order', methods: ['GET'])]
     public function getOrderById($id): JsonResponse
     {
         $order = $this->em->getRepository(Orders::class)->find($id);
@@ -48,7 +48,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/api/orders/{id_user}', name: 'create_order', methods: ['GET'])]
-    public function getOrderByIdUser($id_user): JsonResponse
+    public function getOrderByUser($id_user): JsonResponse
     {
         $orders = $this->em->getRepository(Orders::class)->findByIdUser($id_user);
 

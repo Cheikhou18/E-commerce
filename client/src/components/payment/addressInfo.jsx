@@ -1,58 +1,57 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/admin";
-import { getDeliveryTypes, shippingData } from "../../api/delivery";
+import { shippingData } from "../../api/delivery";
 import { useCartContext } from "../../context/cart";
 import { updateAccount } from "../../api/user";
 
-function Address() {
+function Address({ props }) {
   const { user } = useAuth();
   const { setShippingFee } = useCartContext();
 
-  const [address, setAddress] = useState();
+  const { userInfo, setUserInfo } = props;
   const [message, setMessage] = useState();
   const [priceperkm, setpriceperkm] = useState(1);
-  const [deliveryTypes, setDeliveryTypes] = useState();
 
   useEffect(() => {
-    setAddress({
-      firstname: user?.firstname,
-      lastname: user?.lastname,
-      address: user?.address,
-      city: user?.city,
-      zipcode: user?.zipcode,
+    setUserInfo({
+      ...userInfo,
+      address: {
+        firstname: user?.firstname,
+        lastname: user?.lastname,
+        address: user?.address,
+        city: user?.city,
+        zipcode: user?.zipcode,
+      },
     });
   }, [user]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       updateUser();
-      fetchDeliveryTypes();
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [address]);
-
-  async function fetchDeliveryTypes() {
-    const request = await getDeliveryTypes();
-    setDeliveryTypes(request.response);
-  }
+  }, [userInfo?.address]);
 
   function handleChangeAddress(e) {
-    setAddress((currentAddress) => {
-      return { ...currentAddress, [e.target.name]: e.target.value };
+    setUserInfo((previous) => {
+      return {
+        ...previous,
+        address: { ...previous.address, [e.target.name]: e.target.value },
+      };
     });
   }
 
   async function updateUser() {
     setMessage();
 
-    const formIsComplete = Object.values(address).every(
+    const formIsComplete = Object.values(userInfo?.address).every(
       (value) => value !== ("" || undefined)
     );
 
     if (!formIsComplete) return setMessage("Please enter your address");
 
-    const requestDistanceCalculation = await shippingData(address);
+    const requestDistanceCalculation = await shippingData(userInfo?.address);
     const result = requestDistanceCalculation?.response?.rows[0]?.elements[0];
 
     if (result?.status === "OK") {
@@ -61,8 +60,7 @@ function Address() {
     }
 
     // Update name and/or address
-    const request = await updateAccount(user?.id, { ...user, ...address });
-    console.log({ ...user, ...address });
+    await updateAccount(user?.id, { ...user, ...userInfo?.address });
   }
 
   return (
