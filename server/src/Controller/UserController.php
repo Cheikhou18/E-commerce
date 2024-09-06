@@ -31,6 +31,7 @@ class UserController extends AbstractController
             'tel' => $user->getTel(),
             'city' => $user->getCity(),
             'address' => $user->getAddress(),
+            'password' => $user->getPassword(),
             'zipcode' => $user->getZipcode(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
@@ -50,7 +51,7 @@ class UserController extends AbstractController
 
         if (!$user) return $this->json(['success' => false, 'message' => 'User not found'], 404);
 
-        if ($data->password != null) {
+        if ($passwordHasher->isPasswordValid($user, $data->password) == false) {
             $hashedPassword = $passwordHasher->hashPassword($user, $data->password);
             $user->setPassword($hashedPassword);
         }
