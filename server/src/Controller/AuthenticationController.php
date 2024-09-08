@@ -52,11 +52,12 @@ class AuthenticationController extends AbstractController
             'city' => $user->getCity(),
             'address' => $user->getAddress(),
             'zipcode' => $user->getZipcode(),
-            'password' => $user->getPassword(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
             'firstname' => $user->getFirstname(),
             'lastname' => $user->getLastname(),
+            'password' => $user->getPassword(),
+            'card' => $user->getCard()
         ];
 
         return $this->json([
@@ -94,6 +95,7 @@ class AuthenticationController extends AbstractController
             'roles' => $userExists->getRoles(),
             'firstname' => $userExists->getFirstname(),
             'lastname' => $userExists->getLastname(),
+            'password' => $userExists->getPassword(),
             'card' => $userExists->getCard()
         ];
 
