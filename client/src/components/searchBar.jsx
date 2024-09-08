@@ -5,12 +5,10 @@ import { useNavigate } from 'react-router-dom';
 function SearchBar({ onSearchChange, suggestions }) {
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
-  const navigate = useNavigate();  // useNavigate pour naviguer
+  const navigate = useNavigate();
 
-  // Verify if input value is defined
   useEffect(() => {
     if (inputValue) {
-      // If its defined we compare to suggestions and display the ones who matches
       setOptions(
         suggestions.filter((suggestion) =>
           suggestion.name.toLowerCase().includes(inputValue.toLowerCase())
@@ -21,13 +19,11 @@ function SearchBar({ onSearchChange, suggestions }) {
     }
   }, [inputValue, suggestions]);
 
-  // When input value changes we set the new value
   const handleInputChange = (event, newInputValue) => {
     setInputValue(newInputValue);
     onSearchChange(newInputValue);
   };
 
-  // Handle the option selection and navigate to product details page
   const handleOptionSelect = (event, value) => {
     if (value) {
       navigate(`/products/${value.id}`);
@@ -35,25 +31,29 @@ function SearchBar({ onSearchChange, suggestions }) {
   };
 
   return (
-    // use Autocomplete to display suggestions
     <Autocomplete
       freeSolo
       options={options}
       inputValue={inputValue}
       onInputChange={handleInputChange}
-      onChange={handleOptionSelect} // handle option selection
+      onChange={handleOptionSelect}
       getOptionLabel={(option) => option.name}
       renderOption={(props, option) => (
-        // render each option with image, name and price
-        <li {...props} key={option.id} className="search-option">
+        <li
+          {...props}
+          key={option.id}
+          className="flex items-center p-2 hover:bg-gray-100 cursor-pointer transition-all rounded-lg"
+        >
           <img
             src={option.image}
             alt={option.name}
-            className="search-option-image"
+            className="w-12 h-12 object-cover rounded-full mr-3"
           />
-          <div className="search-option-text">
-            <span className="search-option-name">{option.name}</span>
-            <span className="search-option-price">{option.price}</span>
+          <div className="flex flex-col">
+            {/* Product name */}
+            <span className="font-medium text-gray-700">{option.name}</span>
+            {/* Product price */}
+            <span className="text-sm text-gray-500">{option.price}</span>
           </div>
         </li>
       )}
@@ -63,6 +63,13 @@ function SearchBar({ onSearchChange, suggestions }) {
           variant="outlined"
           fullWidth
           label="Search"
+          className="rounded-full border-gray-300"
+          InputProps={{
+            ...params.InputProps,
+            classes: {
+              root: 'rounded-full',
+            },
+          }}
         />
       )}
     />

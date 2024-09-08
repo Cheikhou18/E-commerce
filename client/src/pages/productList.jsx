@@ -61,16 +61,25 @@ function ProductList() {
   return (
     <div>
       <div className="products-container">
-        <h1>Products</h1>
-        <div className="filters">
+        <h1 className="text-center font-bold text-2xl my-6">Products</h1>
+
+        <div className="filters mb-6 flex flex-col gap-4 md:flex-row md:items-center">
           <SearchBar
             onSearchChange={handleSearchChange}
             suggestions={allSuggestions}
+            className="w-full md:w-1/3"
           />
-          <SortSelect onSortChange={handleSortChange} />
-          <CategoryFilter onCategoryChange={handleCategoryChange} />
+          <SortSelect
+            onSortChange={handleSortChange}
+            className="w-full md:w-1/3"
+          />
+          <CategoryFilter
+            onCategoryChange={handleCategoryChange}
+            className="w-full md:w-1/3"
+          />
         </div>
-        <div className="products-grid">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredProducts?.map((product) => (
             <div className="product-card" key={product.id}>
               {product.stock > 0 ? (

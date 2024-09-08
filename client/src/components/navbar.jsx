@@ -15,9 +15,6 @@ function Navbar() {
         <Link className="mb-4 md:mb-0 md:ml-6" to={"/products"}>
           All glasses
         </Link>
-        <Link className="mb-4 md:mb-0 md:ml-6" to={"/admin"}>
-          Admin
-        </Link>
         
         <Link className="mb-4 md:mb-0 md:ml-6" to={"/"}>
           <button className="px-4 py-2 bg-white rounded-lg w-full">
