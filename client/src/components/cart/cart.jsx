@@ -9,7 +9,7 @@ function Cart() {
   if (!viewCart) return null;
 
   return (
-    <div className="flex flex-col fixed top-30 right-0 h-[73vh] w-full md:h-[90vh] md:w-80 bg-gray-400 z-50">
+    <div className="flex flex-col fixed top-30 right-0 h-[70vh] w-full md:h-[90vh] md:w-80 bg-gray-400 z-50">
       <div className="flex justify-between px-6 py-4 text-2xl font-bold bg-gray-900 text-white">
         <span>Total</span>
         <p>{cartTotalPrice}€</p>
