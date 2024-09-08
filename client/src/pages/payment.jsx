@@ -42,10 +42,11 @@ function Payment() {
     calculateDistance();
 
     if (user?.id) {
+      if (saveCVV === false) setCVV(undefined);
       const request = await updateAccount(user.id, {
         ...user,
         ...userInfo.address,
-        card: { ...userInfo.card },
+        card: { ...userInfo.card, CVV },
       });
     }
   }
