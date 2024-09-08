@@ -6,90 +6,62 @@ import { useCartContext } from "../context/cart";
 function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState();
-  const [similarProducts, setSimilarProducts] = useState([]);
-  const { increaseProductQuantity } = useCartContext();
+  const { increaseProductQuantity, decreaseProductQuantity } = useCartContext();
 
   useEffect(() => {
     async function fetchDetails() {
       const request = await getProductById(id);
-
-      if (request.success) {
-        const product = request.response;
-        setProduct(product);
-
-        // Get similar products
-        const similarRequest = await getSimilarProductsByName(product.name, id);
-        if (similarRequest.success) setSimilarProducts(similarRequest.response);
-      }
+      if (request.success) setProduct(request.response);
     }
 
     fetchDetails();
   }, [id]);
 
-  return (
-    <div className="mt-20 flex flex-col h-screen justify-center items-center">
-      {product ? (
-        <div className="flex flex-col gap-12">
-          <img src={product.image} alt={product.name} className="max-h-96" />
-          <h2 className="text-xl font-bold">{product.name}</h2>
-          <p>Description : {product.description}</p>
+  if (product) {
+    return (
+      <div className="flex justify-center p-6 md:p-12">
+        <div className="flex flex-col gap-3 md:flex-row md:gap-6 md:w-screen md:justify-evenly">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-44 md:w-[32vw]"
+          />
 
-          <div className="flex gap-6">
-            <div>
-            <p className="">
-            Price :{" "}
-            {product.discount > 0
-              ? (product.price * (1 - product.discount / 100))
-              : product.price}
-            €
-          </p>
-            </div>
+          <div className="flex flex-col gap-1 sm:gap-3 w-[50vw]">
+            <h2 className="text-xl capitalize">{product.name}</h2>
+            <h1 className="text-2xl md:text-4xl font-bold">
+              {product.price} €
+            </h1>
 
-            <div>
-              <p>In stock: {product.stock}</p>
-            </div>
-          </div>
+            {product?.similar_products && (
+              <div className="flex flex-col gap-2">
+                {product.similar_products.map((similarProduct) => {
+                  return (
+                    <Link
+                      to={`/products/${similarProduct.id}`}
+                      key={similarProduct.id}
+                      className="flex border px-4 py-2 rounded-md w-fit"
+                    >
+                      <h4 className="capitalize">{similarProduct.color}</h4>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
 
-          <button
-            onClick={() => increaseProductQuantity(product.id)}
-            className="px-4 py-2 bg-green-400 hover:bg-green-800 rounded-xl"
-          >
-            Add to cart
-          </button>
+            <button
+              className="rounded-md px-4 py-2 bg-green-400"
+              onClick={() => increaseProductQuantity(product.id)}
+            >
+              Add to cart
+            </button>
 
-          <div>
-            <h3 className="text-lg font-bold">Other Colors</h3>
-            <div className="flex flex-row gap-4 ">
-              {similarProducts.map((similarProduct) => (
-                <Link
-                  to={`/products/${similarProduct.id}`}
-                  key={similarProduct.id}
-                  className="flex flex-col items-center border p-4 rounded-lg "
-                >
-                  <h4>
-                    {similarProduct.name} ({similarProduct.color})
-                  </h4>
-                  <img
-                    src={similarProduct.image}
-                    alt={similarProduct.name}
-                    className="cursor-pointer h-20"
-                  />
-                  <p>{similarProduct.price} €</p>
-                </Link>
-              ))}
-            </div>
+            <p className="border rounded-md px-6 py-3">{product.description}</p>
           </div>
         </div>
-      ) : (
-        <p>
-          It seems this product does not exist. Go back to{" "}
-          <Link className="underline hover:text-green-500" to="/">
-            Home
-          </Link>
-        </p>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default ProductDetails;
