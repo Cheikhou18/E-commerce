@@ -74,22 +74,10 @@ ul li {
   margin-bottom: 20px;
 }
 .navbar {
-  background-color: #333;
-  overflow: hidden;
-  padding: 10px 25px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  background-color: #ffe8a3;
+    color: black !important;
 }
 
-.navbar a {
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
-  margin: 0 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
 
 .product-image-grey {
   width: 100%;
