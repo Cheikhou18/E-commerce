@@ -9,22 +9,33 @@ function ProductCard(props) {
   const { increaseProductQuantity } = useCartContext();
 
   return (
-    <div className="relative flex flex-col">
-      <Link to={"/products/" + product.id}>
-        <img src={product.image} alt={product.name} className="product-image" />
+    <div className="bg-[#fff3d1] p-4 rounded-lg shadow-lg max-w-sm mx-auto my-4 transition-transform transform hover:-translate-y-2 hover:shadow-xl">
+      <Link to={"/products/" + product.id} className="flex flex-col">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-auto object-contain mb-4"
+        />
 
-        <div className="product-details">
-          <h2 className="product-name">{product.name}</h2>
-          <p className="product-price">
-            Price :{" "}
-            {product.discount > 0
-              ? (product.price * (1 - product.discount / 100)).toFixed(2)
-              : product.price.toFixed(2)}
-            €
+
+        <div className="flex flex-col gap-2">
+          <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
+          <p className="text-gray-700">
+            Price:{" "}
+            <span className="font-bold">
+              {product.discount > 0
+                ? (product.price * (1 - product.discount / 100)).toFixed(2)
+                : product.price.toFixed(2)}
+              €
+            </span>
           </p>
-          {product.discount > 0 && <p>{product.discount}% off!</p>}
+          {product.discount > 0 && (
+            <p className="text-green-600 font-semibold">
+              {product.discount}% off!
+            </p>
+          )}
           {product.stock < 10 && (
-            <p className="stock-warning text-red-500">
+            <p className="text-red-500">
               Warning: only {product.stock} left in stock!
             </p>
           )}
@@ -33,12 +44,12 @@ function ProductCard(props) {
         </div>
       </Link>
 
-      {/* Affichage de l'indicateur NEW ou tout autre contenu enfant */}
-      {children}
+      <div>{children}</div>
+
 
       <button
         onClick={() => increaseProductQuantity(product.id)}
-        className="p-4 rounded-md bg-green-400 hover:bg-green-800"
+        className="mt-4 py-2 px-4 bg-green-500 text-black rounded-md hover:bg-green-600 transition duration-300"
       >
         Add to cart
       </button>

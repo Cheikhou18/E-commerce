@@ -13,6 +13,7 @@ import BeforePayment from "../pages/beforePayment";
 import Navbar from "../components/navbar";
 import Cart from "../components/cart/cart";
 import Breadcrumbs from "../components/breadcrumbs";
+import Footer from "../components/footer";
 
 function Router() {
   return (
@@ -34,6 +35,7 @@ function Router() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
+      <Footer/>
     </BrowserRouter>
   );
 }

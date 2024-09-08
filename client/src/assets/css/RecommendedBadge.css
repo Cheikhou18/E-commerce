@@ -3,7 +3,7 @@
   color: #333;
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: 0.7em; /* Réduit la taille de la police */
+  font-size: 0.7em;
   font-weight: bold;
-  z-index: 1; /* Assure que le badge est au-dessus de l'image */
+  z-index: 1;
 }
