@@ -60,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $last_connected = null;
 
     #[ORM\Column(nullable: true)]
-    private ?array $card = null;
+    private ?array $card = [[]];
 
     public function getId(): ?int
     {
