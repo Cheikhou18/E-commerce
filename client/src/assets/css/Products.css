@@ -17,14 +17,6 @@ h1 {
   width: 30%;
 }
 
-ul li {
-  font-size: 20px;
-}
-.filters {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
 .navbar {
   background-color: #ffe8a3;
   color: black !important;
@@ -47,31 +39,10 @@ ul li {
 */
 .css-ka7ti6-MuiAutocomplete-root .MuiOutlinedInput-root {
   padding: 9px;
-  width: 1000px;
+  width: 1/3;
 }
-.search-option {
-  display: flex;
-  align-items: center;
-  padding: 5px;
-}
-
-.search-option-image {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  margin-right: 10px;
-}
-
-.search-option-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.search-option-name {
-  font-weight: bold;
-}
-
-.search-option-price {
-  font-size: 0.8em;
-  color: gray;
+@media screen and (min-width: 768px) {
+  .css-ka7ti6-MuiAutocomplete-root .MuiOutlinedInput-root {
+    width: 500px;
+  }
 }
