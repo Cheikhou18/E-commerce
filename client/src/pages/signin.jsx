@@ -5,7 +5,7 @@ import { useAuth } from "../context/admin";
 
 function SignIn() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { setUser, setIsAdmin } = useAuth();
 
   const [message, setMessage] = useState();
   const [data, setData] = useState({
@@ -30,6 +30,7 @@ function SignIn() {
 
     localStorage.setItem("id", request.response.id);
     setUser(request.response);
+    setIsAdmin(request.response?.roles?.includes("ROLE_ADMIN"));
 
     navigate("/");
   }

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { get } from "../api";
 
 const AuthContext = createContext();
@@ -35,8 +36,16 @@ export function AuthProvider({ children }) {
     fetchUser();
   }, []);
 
+  function logout() {
+    setUser(null);
+    setIsAdmin(false);
+    localStorage.removeItem("id");
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isAdmin, setUser }}>
+    <AuthContext.Provider
+      value={{ user, setUser, isAdmin, setIsAdmin, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
