@@ -62,23 +62,22 @@ function Payment() {
   }
 
   useEffect(() => {
-    setUserInfo({
-      address: {
-        firstname: user?.firstname,
-        lastname: user?.lastname,
-        address: user?.address,
-        city: user?.city,
-        zipcode: user?.zipcode,
-      },
-      card: {
-        number: user?.card[0]?.number,
-        date: user?.card[0]?.date,
-        name: user?.card[0]?.name,
-        cvv: user?.card[0]?.cvv,
-      },
-    });
-
-    console.log(user);
+    if (user?.id)
+      setUserInfo({
+        address: {
+          firstname: user?.firstname,
+          lastname: user?.lastname,
+          address: user?.address,
+          city: user?.city,
+          zipcode: user?.zipcode,
+        },
+        card: {
+          number: user?.card[0]?.number,
+          date: user?.card[0]?.date,
+          name: user?.card[0]?.name,
+          cvv: user?.card[0]?.cvv,
+        },
+      });
   }, [user]);
 
   return (
