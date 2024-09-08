@@ -4,22 +4,24 @@ import { useAuth } from "../context/admin.js";
 import { useCartContext } from "../context/cart/index.js";
 
 import { shippingData } from "../api/delivery.js";
+import { updateAccount } from "../api/user.js";
 
 import Total from "../components/payment/total.jsx";
 import CardInfo from "../components/payment/cardInfo.jsx";
 import Address from "../components/payment/addressInfo.jsx";
 import ProductsInPayment from "../components/payment/productsInPayment.jsx";
-import { updateAccount } from "../api/user.js";
 
 function Payment() {
   const { user } = useAuth();
+
+  const [CVV, setCVV] = useState();
+  const [saveCVV, setSaveCVV] = useState(false);
   const [userInfo, setUserInfo] = useState();
+
   const { cartProducts, setShippingFee } = useCartContext();
   const [message, setMessage] = useState({ address: "", card: "" });
 
   async function handleSubmit() {
-    setMessage({ address: "", card: "" });
-
     const addressIsComplete = Object.values(userInfo.address).every(
       (value) => value !== ("" || undefined || null)
     );
@@ -93,7 +95,10 @@ function Payment() {
       </div>
 
       <Address props={{ userInfo, setUserInfo }} />
-      <CardInfo props={{ userInfo, setUserInfo }} />
+      {message.address}
+
+      <CardInfo props={{ userInfo, setUserInfo, setCVV, setSaveCVV }} />
+      {message.card}
 
       <button
         onClick={handleSubmit}

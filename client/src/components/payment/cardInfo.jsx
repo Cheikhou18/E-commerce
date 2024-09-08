@@ -1,5 +1,7 @@
+import { useState } from "react";
+
 function CardInfo({ props }) {
-  const { userInfo, setUserInfo } = props;
+  const { userInfo, setUserInfo, setSaveCVV, setCVV } = props;
 
   function handleChange(e) {
     setUserInfo((previous) => {
@@ -56,8 +58,16 @@ function CardInfo({ props }) {
             type="text"
             name="cvv"
             defaultValue={userInfo?.card?.cvv}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => setCVV(e.target.value)}
             className="border p-2"
+          />
+        </div>
+
+        <div>
+          <label>Save CVV</label>
+          <input
+            type="checkbox"
+            onChange={(e) => setSaveCVV(e.target.checked)}
           />
         </div>
       </div>
