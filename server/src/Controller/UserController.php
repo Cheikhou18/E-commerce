@@ -51,7 +51,7 @@ class UserController extends AbstractController
 
         if (!$user) return $this->json(['success' => false, 'message' => 'User not found'], 404);
 
-        if ($passwordHasher->isPasswordValid($user, $data->password) == false) {
+        if ($user->getPassword() !== $data->password) {
             $hashedPassword = $passwordHasher->hashPassword($user, $data->password);
             $user->setPassword($hashedPassword);
         }
