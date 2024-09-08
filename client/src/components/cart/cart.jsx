@@ -4,7 +4,8 @@ import { useCartContext } from "../../context/cart";
 import { ProductsInCart } from "./productsInCart";
 
 function Cart() {
-  const { cartTotalPrice, cartProducts, viewCart } = useCartContext();
+  const { cartTotalPrice, cartProducts, viewCart, setViewCart } =
+    useCartContext();
 
   if (!viewCart) return null;
 
@@ -21,6 +22,7 @@ function Cart() {
 
       <Link
         className="flex justify-center w-full md:w-80 p-6 absolute bottom-0 right-0 bg-green-400"
+        onClick={() => setViewCart(false)}
         to="/verification"
       >
         Proceed to payment
